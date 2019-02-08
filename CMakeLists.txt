@@ -40,9 +40,10 @@ set_target_properties( ${PROJECT}
 
 # Enlist all source files used (except the ones already reffered to in 'add_executable')
 target_sources(${PROJECT}
-      PRIVATE ${SRCDIR}/ShaderProgram.cpp
+     PRIVATE ${SRCDIR}/ShaderProgram.cpp
      PRIVATE ${SRCDIR}/gameobject.cpp
      PRIVATE ${SRCDIR}/MapLoader.cpp
+	 PRIVATE ${SRCDIR}/Player.cpp
      PRIVATE ${SRCDIR}/texture.cpp
      PRIVATE ${SRCDIR}/texturemanager.cpp
 	 PRIVATE ${SRCDIR}/spriterenderer.cpp
