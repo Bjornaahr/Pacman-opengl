@@ -41,10 +41,12 @@ set_target_properties( ${PROJECT}
 # Enlist all source files used (except the ones already reffered to in 'add_executable')
 target_sources(${PROJECT}
       PRIVATE ${SRCDIR}/ShaderProgram.cpp
-#     PRIVATE ${SRCDIR}/VertexBuffer.cpp
-#     PRIVATE ${SRCDIR}/elementBuffer.cpp
-#     PRIVATE ${SRCDIR}/uniformBuffer.cpp
-#     PRIVATE ${SRCDIR}/frameBuffer.cpp
+     PRIVATE ${SRCDIR}/gameobject.cpp
+     PRIVATE ${SRCDIR}/MapLoader.cpp
+     PRIVATE ${SRCDIR}/texture.cpp
+     PRIVATE ${SRCDIR}/texturemanager.cpp
+	 PRIVATE ${SRCDIR}/spriterenderer.cpp
+
 )
 
 # Set up directories from which you can #include

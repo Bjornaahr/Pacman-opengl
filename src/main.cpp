@@ -16,8 +16,11 @@
 #define GFX_IMPLEMENTATION
 #include <GFX/gfx.h>
 #include "shaderloader.h"
+#include "textureManager.h"
+#include "spriterenderer.h"
 
 ShaderProgram activeShaderProgram;
+SpriteRenderer  *Renderer;
 
 struct Vertex {
 	glm::vec2 position;
@@ -27,24 +30,12 @@ struct Vertex {
 
 void static_code(GLuint &vao, GLuint &vbo, GLuint &ebo, GLuint(&textures)[2]) {
 
-	glBindVertexArray(vao);
+	//Creates a spriterenderer
+	Renderer = new SpriteRenderer();
 
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-
-
-	glGenBuffers(1, &vbo);
-
+	//All of this will be moved later
 	activeShaderProgram = createProgram("resources/shaders/vertex.vert", "resources/shaders/fragment.frag");
 
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 4, NULL, GL_DYNAMIC_DRAW);
-	
-
-	glGenBuffers(1, &ebo);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * 3 * 2, NULL, GL_DYNAMIC_DRAW);
 
 	GLint posAttrib = activeShaderProgram.getAttributeLocation("position");
 	glEnableVertexAttribArray(posAttrib);
@@ -76,33 +67,18 @@ void static_code(GLuint &vao, GLuint &vbo, GLuint &ebo, GLuint(&textures)[2]) {
 		GL_FLOAT, 												//underlying type
 		GL_FALSE, 												//normalized
 		sizeof(Vertex), 										//stride -> start reading next attribute after skipping 'sizeof(Vertex)' bytes
-		(const GLvoid*) (sizeof(glm::vec2) + sizeof(glm::vec3))	//attibute offset -> skip sizeof( previous attribute(-s) ) bytes forward
+		(const GLvoid*)(sizeof(glm::vec2) + sizeof(glm::vec3))	//attibute offset -> skip sizeof( previous attribute(-s) ) bytes forward
 	);
-
-	// Load textures
-	glGenTextures(2, textures);
-
-	int width, height;
-	unsigned char* image;
-	float x, y, widthT, heightT;
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, textures[0]);
-	image = SOIL_load_image("resources/textures/spritesheet.png", &width, &height, 0, SOIL_LOAD_AUTO);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-	SOIL_free_image_data(image);
 
 
 	glUniform1i(activeShaderProgram.getUniformLocation("texOne"), 0);
+	//Loads texture (Path, name for future refrence)
+	TextureManager::LoadTexture("resources/assets/pacman.png", "packman");
 
-	// ST- are (in most cases) equivalent to UV coordinates
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	glActiveTexture(GL_TEXTURE1);
+	glActiveTexture(GL_TEXTURE0);
 
-	//Sample code for loading additional sprite. But not used in this code
+	/*//Sample code for loading additional sprite. But not used in this code
 	glBindTexture(GL_TEXTURE_2D, textures[1]);
 
 	image = SOIL_load_image("resources/assets/pacman.png", &width, &height, 0, SOIL_LOAD_AUTO);
@@ -119,47 +95,19 @@ void static_code(GLuint &vao, GLuint &vbo, GLuint &ebo, GLuint(&textures)[2]) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);*/
 
 }
 
 
-void dynamic_code(GLuint &vao, GLuint &vbo, GLuint &ebo, GLuint(&textures)[2])
+void dynamic_code()
 {
 	// Use a Vertex Array Object
-	glBindVertexArray(vao);
-	glActiveTexture(GL_TEXTURE0);
-
-
 	
+	//Draws packman, (Texture, position, size, rotation, color)
+	Renderer->DrawSprite(TextureManager::GetTexture("packman"),
+		glm::vec2(0, 0), glm::vec2(300, 400), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
-	Vertex verts[] = {
-		Vertex{ /*pos*/{ 0.5f, 1.0f }, /*col*/{ 1, 0, 0 }, /*uv*/{ 0.00f, 0.00f } },
-		Vertex{ /*pos*/{ 1.0f, 1.0f }, /*col*/{ 0, 1, 0 }, /*uv*/{ 0.25f, 0.00f } },
-		Vertex{ /*pos*/{ 1.0f, 0.5f }, /*col*/{ 0, 0, 1 }, /*uv*/{ 0.25f, 0.25f } },
-		Vertex{ /*pos*/{ 0.5f, 0.5f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.00f, 0.25f } },
-	};
-
-
-	glBindVertexArray(vao);
-	
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(verts), verts);
-	
-	GLuint elements[] = {
-		0, 1, 2,
-		2, 3, 0
-
-	};
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	
-	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(elements), elements);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (const GLvoid*)0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
 }
 
 
@@ -217,7 +165,7 @@ int main(void)
 		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-		dynamic_code(vao, vbo, ebo, textures);
+		dynamic_code();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
