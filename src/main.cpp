@@ -15,15 +15,15 @@
 
 #define GFX_IMPLEMENTATION
 #include <GFX/gfx.h>
-#include "Player.h"
 #include "shaderloader.h"
 #include "textureManager.h"
 #include "spriterenderer.h"
+#include "player.h"
 
 
 ShaderProgram activeShaderProgram;
 SpriteRenderer  *Renderer;
-Player *Player;
+Player *player;
 
 struct Vertex {
 	glm::vec2 position;
@@ -35,7 +35,7 @@ void static_code(GLuint &vao, GLuint &vbo, GLuint &ebo, GLuint(&textures)[2]) {
 
 	//Creates a spriterenderer
 	Renderer = new SpriteRenderer();
-	Player = new Player();
+	player = new Player();
 
 	//All of this will be moved later
 	activeShaderProgram = createProgram("resources/shaders/vertex.vert", "resources/shaders/fragment.frag");

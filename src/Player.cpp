@@ -1,4 +1,9 @@
-#include "Player.h"
+#include "player.h"
+#include <GLFW/glfw3.h>
+
+Player::Player() {
+
+}
 
 void Player::Movement() {
 	// Move forward
