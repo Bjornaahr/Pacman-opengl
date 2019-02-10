@@ -104,13 +104,14 @@ void static_code(GLuint &vao, GLuint &vbo, GLuint &ebo, GLuint(&textures)[2]) {
 }
 
 
-void dynamic_code()
+void dynamic_code(GLFWwindow *w, glm::vec2 *p)
 {
 	// Use a Vertex Array Object
 	
+	player->movement(w, p);
 	//Draws packman, (Texture, position, size, rotation, color)
 	Renderer->DrawSprite(TextureManager::GetTexture("packman"),
-		glm::vec2(0, 0), glm::vec2(300, 400), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		*p, glm::vec2(300, 400), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
 }
 
@@ -155,7 +156,7 @@ int main(void)
 	glClearColor(1,1,1,1);
 	double lastTime = glfwGetTime();
 	int nbFrames = 0;
-
+	glm::vec2 p = glm::vec2(0, 0);
 	do {
 	
 		// Measure speed
@@ -169,7 +170,7 @@ int main(void)
 		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-		dynamic_code();
+		dynamic_code(window, &p);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
