@@ -8,10 +8,13 @@
 
 class Player {
 private:
+	float x, y;
 
 public:
 	Player();
 	~Player();
-	void movement(GLFWwindow *w, glm::vec2 *position);
+	void movement(GLFWwindow *w);
+	float xPosition();
+	float yPosition();
 
 };

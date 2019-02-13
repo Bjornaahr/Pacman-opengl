@@ -5,24 +5,34 @@ Player::Player() {
 
 }
 
-void Player::movement(GLFWwindow *w, glm::vec2 *position) {
-	glm::vec2 speed = glm::vec2(1, 1);
+void Player::movement(GLFWwindow *w) {
+	
+
 	// Move forward
-	glm::vec2 d = glm::vec2(0, 1);
-	glm::vec2 r = glm::vec2(1, 0);
-	if (glfwGetKey(w, GLFW_KEY_UP) == GLFW_PRESS) {
-		position += d * speed;
+	if (glfwGetKey(w, GLFW_KEY_W) == GLFW_PRESS) {
+		this->y += 1.f * 0.3 * 1.f;
 	}
 	// Move backward
-	if (glfwGetKey(w, GLFW_KEY_DOWN) == GLFW_PRESS) {
-		position -= d * speed;
+	if (glfwGetKey(w, GLFW_KEY_S) == GLFW_PRESS) {
+		this->y -= 1.f * 0.3 * 1.f;
 	}
 	// Strafe right
-	if (glfwGetKey(w, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-		position += r * speed;
+	if (glfwGetKey(w, GLFW_KEY_D) == GLFW_PRESS) {
+		this->x += 1.f * 0.3 * 1.f;
 	}
 	// Strafe left
-	if (glfwGetKey(w, GLFW_KEY_LEFT) == GLFW_PRESS) {
-		position -= r * speed;
+	if (glfwGetKey(w, GLFW_KEY_A) == GLFW_PRESS) {
+		this->x -= 1.f * 0.3 * 1.f;
 	}
 }
+
+float Player::xPosition()
+{
+	return this->x;
+}
+
+float Player::yPosition()
+{
+	return this->y;
+}
+
