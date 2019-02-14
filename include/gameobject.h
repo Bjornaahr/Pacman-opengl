@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include "texture.h"
+#include "spriterenderer.h"
 
 class GameObject {
 public:
@@ -12,6 +13,9 @@ public:
 	GLfloat Rotation;
 	//Texture
 	Texture Sprite;
+
+	void Draw(SpriteRenderer &renderer);
+
 	//Constructors
 	GameObject();
 	GameObject(glm::vec2 pos, glm::vec2 sizem, Texture sprite, glm::vec3 color = glm::vec3(1.0f), glm::vec2 velocity = glm::vec2(0.0f,0.0f));

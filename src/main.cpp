@@ -19,11 +19,18 @@
 #include "textureManager.h"
 #include "spriterenderer.h"
 #include "player.h"
+#include "gameobject.h"
+#include "maploader.h"
+
 
 
 ShaderProgram activeShaderProgram;
 SpriteRenderer  *Renderer;
 Player *player;
+
+std::vector<MapLoader> Levels;
+GLuint Level;
+
 
 struct Vertex {
 	glm::vec2 position;
@@ -78,6 +85,13 @@ void static_code(GLuint &vao, GLuint &vbo, GLuint &ebo, GLuint(&textures)[2]) {
 	glUniform1i(activeShaderProgram.getUniformLocation("texOne"), 0);
 	//Loads texture (Path, name for future refrence)
 	TextureManager::LoadTexture("resources/assets/pacman.png", "packman");
+	TextureManager::LoadTexture("resources/assets/wall.png", "wall");
+
+	MapLoader one; 
+	one.Load("resources/levels/level0", 28, 36);
+	Levels.push_back(one);
+	Level = 1;
+
 
 
 	glActiveTexture(GL_TEXTURE0);
@@ -112,7 +126,9 @@ void dynamic_code(GLFWwindow *w, glm::vec2 *p)
 	p = &glm::vec2(player->xPosition(), player->yPosition());
 	//Draws packman, (Texture, position, size, rotation, color)
 	Renderer->DrawSprite(TextureManager::GetTexture("packman"),
-		*p, glm::vec2(300, 400), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		*p, glm::vec2(50, 50), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+
+	Levels[Level-1].Draw(*Renderer);
 
 }
 
