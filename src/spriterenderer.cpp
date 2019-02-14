@@ -47,7 +47,12 @@ void SpriteRenderer::DrawSprite(Texture &texture, glm::vec2 position,
 	
 
 	//Just have to add transformation
+	glm::mat4 model;
+	model = glm::translate(model, glm::vec3(position, 0.f));
 
+	/*
+	this->shader.SetMatrix4("model", model);
+	*/
 	
 
 

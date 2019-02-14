@@ -5,7 +5,7 @@ Player::Player() {
 
 }
 
-void Player::movement(GLFWwindow *w) {
+glm::vec2 Player::movement(GLFWwindow *w) {
 	
 
 	// Move forward
@@ -24,15 +24,8 @@ void Player::movement(GLFWwindow *w) {
 	if (glfwGetKey(w, GLFW_KEY_A) == GLFW_PRESS) {
 		this->x -= 1.f * 0.3 * 1.f;
 	}
+
+	return glm::vec2(this->x, this->y);
 }
 
-float Player::xPosition()
-{
-	return this->x;
-}
-
-float Player::yPosition()
-{
-	return this->y;
-}
 

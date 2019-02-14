@@ -108,8 +108,7 @@ void dynamic_code(GLFWwindow *w, glm::vec2 *p)
 {
 	// Use a Vertex Array Object
 	
-	player->movement(w);
-	p = &glm::vec2(player->xPosition(), player->yPosition());
+	*p = player->movement(w);
 	//Draws packman, (Texture, position, size, rotation, color)
 	Renderer->DrawSprite(TextureManager::GetTexture("packman"),
 		*p, glm::vec2(300, 400), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
