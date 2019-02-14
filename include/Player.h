@@ -13,8 +13,6 @@ private:
 public:
 	Player();
 	~Player();
-	void movement(GLFWwindow *w);
-	float xPosition();
-	float yPosition();
+	glm::vec2 movement(GLFWwindow *w);
 
 };
