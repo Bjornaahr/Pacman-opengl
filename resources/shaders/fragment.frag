@@ -1,12 +1,11 @@
 #version 330 core
 
-in vec2 TexCoords;
-out vec4 color;
-
-uniform sampler2D image;
-uniform vec3 spriteColor;
-
+in vec3 Color;
+in vec2 Texcoord;
+out vec4 outColor;
+uniform sampler2D texOne;
+uniform sampler2D texTwo;
 void main()
-{    
-    color = vec4(spriteColor, 1.0) * texture(image, TexCoords);
-} 
+ {
+	outColor = texture(texOne, Texcoord) * vec4(Color, 1); 
+ }

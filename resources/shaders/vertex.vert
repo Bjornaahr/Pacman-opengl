@@ -1,17 +1,21 @@
 #version 330 core
 
-layout (location = 0) in vec4 vertex;
+//layout (location = 0) in vec4 vertex;
 
+in vec4 position;
 in vec3 color;
+in vec2 texcoord;
 out vec3 Color;
 out vec2 Texcoord;
 
-uniform mat4 model;
-uniform mat4 projection;
+uniform mat4 model      =mat4(1);
+uniform mat4 view       =mat4(1);                         //<-- 4x4 Transformation Matrices
+uniform mat4 projection =mat4(1);
 
 void main()
 {
     Color = color;
-    Texcoord = vertex.zw;
-    gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);
- }
+    Texcoord = texcoord;
+	gl_Position = projection * view * model * position; 
+	
+	}
