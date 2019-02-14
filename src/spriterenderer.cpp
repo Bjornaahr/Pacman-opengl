@@ -3,11 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-struct Vertex {
-	glm::vec2 position;
-	glm::vec3 color;
-	glm::vec2 uv;
-};
+
 
 
 SpriteRenderer::SpriteRenderer()
@@ -19,6 +15,11 @@ SpriteRenderer::SpriteRenderer()
 
 void SpriteRenderer::initRenderData()
 {
+
+	verts[0] = { Vertex{ /*pos*/{ 0.5f, 1.0f }, /*col*/{ 1, 0, 0 }, /*uv*/{ 0.00f, 0.00f } } };
+	verts[1] = { Vertex{ /*pos*/{ 1.0f, 1.0f }, /*col*/{ 0, 1, 0 }, /*uv*/{ 0.25f, 0.00f } } };
+	verts[2] = { Vertex{ /*pos*/{ 1.0f, 0.5f }, /*col*/{ 0, 0, 1 }, /*uv*/{ 0.25f, 0.25f } } };
+	verts[3] = { Vertex{ /*pos*/{ 0.5f, 0.5f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.00f, 0.25f } } };
 
 	glBindVertexArray(this->VAO);
 
@@ -43,13 +44,7 @@ void SpriteRenderer::DrawSprite(Texture &texture, glm::vec2 position,
 	glm::vec2 size, GLfloat rotate, glm::vec3 color)
 {
 
-	Vertex verts[] = {
-	Vertex{ /*pos*/{ 0.5f, 1.0f }, /*col*/{ 1, 0, 0 }, /*uv*/{ 0.00f, 0.00f } },
-	Vertex{ /*pos*/{ 1.0f, 1.0f }, /*col*/{ 0, 1, 0 }, /*uv*/{ 0.25f, 0.00f } },
-	Vertex{ /*pos*/{ 1.0f, 0.5f }, /*col*/{ 0, 0, 1 }, /*uv*/{ 0.25f, 0.25f } },
-	Vertex{ /*pos*/{ 0.5f, 0.5f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.00f, 0.25f } },
-	};
-
+	
 
 	//Just have to add transformation
 

@@ -19,6 +19,13 @@ private:
 	GLuint EBO;
 	GLuint VBO;
 
+	struct Vertex {
+		glm::vec2 position;
+		glm::vec3 color;
+		glm::vec2 uv;
+	};
+
+	Vertex verts[4];
 
 	void initRenderData();
 };
