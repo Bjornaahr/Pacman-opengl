@@ -15,7 +15,6 @@
 
 #define GFX_IMPLEMENTATION
 #include <GFX/gfx.h>
-#include "shaderloader.h"
 #include "textureManager.h"
 #include "spriterenderer.h"
 #include "player.h"
@@ -24,7 +23,6 @@
 
 
 
-ShaderProgram activeShaderProgram;
 SpriteRenderer  *Renderer;
 Player *player;
 
@@ -45,75 +43,18 @@ void static_code(GLuint &vao, GLuint &vbo, GLuint &ebo, GLuint(&textures)[2]) {
 	player = new Player();
 
 	//All of this will be moved later
-	activeShaderProgram = createProgram("resources/shaders/vertex.vert", "resources/shaders/fragment.frag");
 
 
-	GLint posAttrib = activeShaderProgram.getAttributeLocation("position");
-	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(
-		posAttrib,		//location
-		2,				//size -> components attribute consists of
-		GL_FLOAT,		//underlying type
-		GL_FALSE,		//normalized
-		sizeof(Vertex), //stride -> start reading next attribute after skipping 'sizeof(Vertex)' bytes
-		0				//attibute offset -> this is the first attribute, no offset needed
-	);
 
-	GLint colAttrib = activeShaderProgram.getAttributeLocation("color");
-	glEnableVertexAttribArray(colAttrib);
-	glVertexAttribPointer(
-		colAttrib,							//location
-		3, 									//size -> components attribute consists of
-		GL_FLOAT,							//underlying type
-		GL_FALSE,							//normalized
-		sizeof(Vertex),						//stride -> start reading next attribute after skipping 'sizeof(Vertex)' bytes
-		(const GLvoid*) sizeof(glm::vec2)	//attibute offset -> skip sizeof( previous attribute(-s) ) bytes forward
-	);
-
-	GLint texCoordAttrib = activeShaderProgram.getAttributeLocation("texcoord");
-	glEnableVertexAttribArray(texCoordAttrib);
-	glVertexAttribPointer(
-		texCoordAttrib,											//location
-		2, 														//size -> components attribute consists of
-		GL_FLOAT, 												//underlying type
-		GL_FALSE, 												//normalized
-		sizeof(Vertex), 										//stride -> start reading next attribute after skipping 'sizeof(Vertex)' bytes
-		(const GLvoid*)(sizeof(glm::vec2) + sizeof(glm::vec3))	//attibute offset -> skip sizeof( previous attribute(-s) ) bytes forward
-	);
-
-
-	glUniform1i(activeShaderProgram.getUniformLocation("texOne"), 0);
 	//Loads texture (Path, name for future refrence)
 	TextureManager::LoadTexture("resources/assets/pacman.png", "packman");
 	TextureManager::LoadTexture("resources/assets/wall.png", "wall");
 
 	MapLoader one; 
-	one.Load("resources/levels/level0", 28, 36);
+	one.Load("resources/levels/level0", 1024, 768);
 	Levels.push_back(one);
 	Level = 1;
 
-
-
-	glActiveTexture(GL_TEXTURE0);
-
-	/*//Sample code for loading additional sprite. But not used in this code
-	glBindTexture(GL_TEXTURE_2D, textures[1]);
-
-	image = SOIL_load_image("resources/assets/pacman.png", &width, &height, 0, SOIL_LOAD_AUTO);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-	SOIL_free_image_data(image);
-	glUniform1i(activeShaderProgram.getUniformLocation("texTwo"), 1);
-	GFX_INFO(
-		"\nThe warning you now should've gotten is expected in this case\n"
-		"as we've written code for how to bind a second texture,\n" 
-		"though because this texture is not part of the shader code\n"
-		"it's not possible to change its value\n\n"
-	);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);*/
 
 }
 
@@ -125,9 +66,9 @@ void dynamic_code(GLFWwindow *w, glm::vec2 *p)
 	*p = player->movement(w);
 	//Draws packman, (Texture, position, size, rotation, color)
 	Renderer->DrawSprite(TextureManager::GetTexture("packman"),
-		*p, glm::vec2(50, 50), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		*p, glm::vec2(1, 1), 0.0f, glm::vec3(0.0f, 0.0f, 0.0f));
 
-	Levels[Level-1].Draw(*Renderer);
+	//Levels[Level-1].Draw(*Renderer);
 
 }
 

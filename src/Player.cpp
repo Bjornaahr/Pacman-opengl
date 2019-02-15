@@ -2,7 +2,8 @@
 
 
 Player::Player() {
-
+	this->x = 0;
+	this->y = 0;
 }
 
 glm::vec2 Player::movement(GLFWwindow *w) {
