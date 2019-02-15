@@ -13,6 +13,6 @@ private:
 public:
 	Player();
 	~Player();
-	glm::vec2 movement(GLFWwindow *w);
+	glm::vec2 movement(GLFWwindow *w, double DeltaTime);
 
 };
