@@ -23,6 +23,7 @@
 
 
 
+
 SpriteRenderer  *Renderer;
 Player *player;
 
@@ -62,11 +63,11 @@ void static_code(GLuint &vao, GLuint &vbo, GLuint &ebo, GLuint(&textures)[2]) {
 }
 
 
-void dynamic_code(GLFWwindow *w, glm::vec2 *p)
+void dynamic_code(GLFWwindow *w, glm::vec2 *p, double deltaTime)
 {
 	// Use a Vertex Array Object
 	
-	*p = player->movement(w);
+	*p = player->movement(w, deltaTime);
 	//Draws packman, (Texture, position, size, rotation, color)
 	Renderer->DrawSprite(TextureManager::GetTexture("packman"),
 		*p, glm::vec2(1, 1), 0.0f, glm::vec3(0.0f, 0.0f, 0.0f));
@@ -116,9 +117,12 @@ int main(void)
 	glClearColor(1,1,1,1);
 	double lastTime = glfwGetTime();
 	int nbFrames = 0;
+	double deltaTime = 0;
+	double oldTime = 0;
 	glm::vec2 p = glm::vec2(0.f, 0.f);
-	do {
 	
+	do {
+		
 		// Measure speed
 		double currentTime = glfwGetTime();
 		nbFrames++;
@@ -127,14 +131,20 @@ int main(void)
 			GFX_INFO("%f ms/frame", 1000.0 / double(nbFrames));
 			nbFrames = 0;
 			lastTime += 1.0;
+
+
+			/*
+			add animation steps?
+			*/
+
 		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-		dynamic_code(window, &p);
+		deltaTime = currentTime - oldTime;
+		dynamic_code(window, &p, deltaTime);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-
+		oldTime = currentTime;
 	} 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
 		glfwWindowShouldClose(window) == 0);

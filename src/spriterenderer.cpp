@@ -109,7 +109,18 @@ void SpriteRenderer::DrawSprite(Texture &texture, glm::vec2 position,
 
 	glUniformMatrix4fv(modelID, 1, GL_FALSE, glm::value_ptr(model));
 	
+	/*
+	Have frames from Animationcontroller inserted (currently including the controller in main breaks it)
+	change verts uv to frame[1], frame[2] and so on
 
+	verts[1].uv = frame[1];
+	verts[2].uv = frame[2];
+	verts[3].uv = frame[3];
+	verts[4].uv = frame[4];
+
+	*/
+
+	
 
 	glActiveTexture(GL_TEXTURE0);
 	texture.Bind();
