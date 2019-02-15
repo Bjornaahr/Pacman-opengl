@@ -29,6 +29,8 @@ Player *player;
 std::vector<MapLoader> Levels;
 GLuint Level;
 
+int WIDTH = 1024, HEIGHT = 768;
+
 
 struct Vertex {
 	glm::vec2 position;
@@ -48,10 +50,11 @@ void static_code(GLuint &vao, GLuint &vbo, GLuint &ebo, GLuint(&textures)[2]) {
 
 	//Loads texture (Path, name for future refrence)
 	TextureManager::LoadTexture("resources/assets/pacman.png", "packman");
-	TextureManager::LoadTexture("resources/assets/wall.png", "wall");
+	TextureManager::LoadTexture("resources/assets/block.png", "wall");
+
 
 	MapLoader one; 
-	one.Load("resources/levels/level0", 1024, 768);
+	one.Load("resources/levels/level0", WIDTH, HEIGHT);
 	Levels.push_back(one);
 	Level = 1;
 
@@ -68,7 +71,7 @@ void dynamic_code(GLFWwindow *w, glm::vec2 *p)
 	Renderer->DrawSprite(TextureManager::GetTexture("packman"),
 		*p, glm::vec2(1, 1), 0.0f, glm::vec3(0.0f, 0.0f, 0.0f));
 
-	//Levels[Level-1].Draw(*Renderer);
+	Levels[Level-1].Draw(*Renderer);
 
 }
 
@@ -87,7 +90,7 @@ int main(void)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Open a window and create its OpenGL context
-	GLFWwindow* window = glfwCreateWindow(1024, 768, "Lab 04", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Packman", NULL, NULL);
 	if (window == NULL) {
 		GFX_ERROR("Failed to open GLFW window.\n");
 	}
