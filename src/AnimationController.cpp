@@ -20,6 +20,13 @@ void AnimationController::step() {
 	frame[3] = frame[0] + glm::vec2{ 0.0f, spriteSize.y };
 }
 
+AnimationController::AnimationController(glm::vec3 start, glm::vec3 running) {
+	Animation animations[] {
+		{start.x, start.y, start.z},
+		{running.x, running.y, running.z}
+	};
+}
+
 const glm::vec2* AnimationController::getFrame() const {
 	return frame;
 }

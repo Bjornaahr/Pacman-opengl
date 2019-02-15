@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "texture.h"
+#include "AnimationController.h"
 
 class SpriteRenderer
 {

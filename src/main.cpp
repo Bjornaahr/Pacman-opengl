@@ -23,6 +23,7 @@
 
 
 
+
 SpriteRenderer  *Renderer;
 Player *player;
 
@@ -127,6 +128,12 @@ int main(void)
 			GFX_INFO("%f ms/frame", 1000.0 / double(nbFrames));
 			nbFrames = 0;
 			lastTime += 1.0;
+
+
+			/*
+			add animation steps?
+			*/
+
 		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		deltaTime = currentTime - oldTime;

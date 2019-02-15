@@ -7,11 +7,11 @@
 class AnimationController {
 private:
 	struct Animation {
-		int startFrame, framecount, nextAnimation;
+		int startFrame, frameCount, nextAnimation;
 	};
 	Animation * animations;
 	glm::vec2 frame[4];
-	int currentFrame, currentAnimation, framecount;
+	int currentFrame, currentAnimation, frameCount;
 	glm::ivec2 spritesPerSize;
 	glm::vec2 spriteSize;
 public:
@@ -28,6 +28,7 @@ public:
 		frame[2] = spriteSize;
 		frame[3] = { 0.0f, spriteSize.y };
 	}
+	AnimationController(glm::vec3 star, glm::vec3 running);
 
 	void setanimation(int animationIndex);
 	void step();
