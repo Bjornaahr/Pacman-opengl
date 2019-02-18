@@ -2,9 +2,9 @@
 #define PI (float)3.14159265359
 
 Player::Player() {
+	this->x = 2.5;
+	this->y = 2;
 	direction = glm::vec2(0.f, 0.f);
-	this->x = 0;
-	this->y = 0;
 }
 
 glm::vec2 Player::movement(GLFWwindow *w, double deltaTime) {
