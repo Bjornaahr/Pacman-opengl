@@ -8,9 +8,9 @@
 
 class Player {
 private:
+	glm::vec2 direction;
 	float x, y;
 	float rotate;
-	bool direction[4];
 
 public:
 	Player();
