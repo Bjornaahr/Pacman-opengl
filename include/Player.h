@@ -10,6 +10,7 @@ class Player {
 private:
 	float x, y;
 	float rotate;
+	bool direction[4];
 
 public:
 	Player();
