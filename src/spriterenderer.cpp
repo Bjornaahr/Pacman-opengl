@@ -110,7 +110,7 @@ void SpriteRenderer::DrawSprite(Texture &texture, glm::vec2 position,
 
 	//Just have to add transformation
 	glm::mat4 translate = glm::translate(glm::mat4(1), glm::vec3(position, 0.f));
-	glm::mat4 rotateM = glm::rotate(glm::mat4(1), rotate * PI / 180, glm::vec3(0, 0, 1));
+	glm::mat4 rotateM = glm::rotate(glm::mat4(1), rotate, glm::vec3(0,0,1));
 	glm::mat4 scale = glm::scale(glm::mat4(1), glm::vec3(size, 0.f));
 
 	glm::mat4 model = translate * rotateM * scale;

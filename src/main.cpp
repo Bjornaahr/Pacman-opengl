@@ -72,7 +72,7 @@ void dynamic_code(GLFWwindow *w, glm::vec2 *p, double deltaTime)
 	*p = player->movement(w, deltaTime);
 	//Draws packman, (Texture, position, size, rotation, color)
 	Renderer->DrawSprite(TextureManager::GetTexture("packman"),
-		*p, glm::vec2(0.7f, 0.7f), 0.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+		*p, glm::vec2(0.7f, 0.7f), player->rotation(), glm::vec3(0.0f, 0.0f, 0.0f));
 
 	Levels[Level-1].Draw(*Renderer);
 

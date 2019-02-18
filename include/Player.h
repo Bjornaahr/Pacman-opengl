@@ -9,10 +9,13 @@
 class Player {
 private:
 	float x, y;
+	float rotate;
 
 public:
 	Player();
 	~Player();
 	glm::vec2 movement(GLFWwindow *w, double DeltaTime);
+
+	float rotation();
 
 };
