@@ -21,10 +21,10 @@ SpriteRenderer::SpriteRenderer()
 void SpriteRenderer::initRenderData()
 {
 
-	verts[0] = { Vertex{ /*pos*/{ 0.5f, 1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.00f, 0.00f } } };
+	verts[0] = { Vertex{ /*pos*/{ -1.0f, 1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.00f, 0.00f } } };
 	verts[1] = { Vertex{ /*pos*/{ 1.0f, 1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.17f, 0.00f } } };
-	verts[2] = { Vertex{ /*pos*/{ 1.0f, 0.5f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.17f, 0.25f } } };
-	verts[3] = { Vertex{ /*pos*/{ 0.5f, 0.5f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.00f, 0.25f } } };
+	verts[2] = { Vertex{ /*pos*/{ 1.0f, -1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.17f, 0.25f } } };
+	verts[3] = { Vertex{ /*pos*/{ -1.0f, -1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.00f, 0.25f } } };
 
 	glBindVertexArray(this->VAO);
 
@@ -108,10 +108,11 @@ void SpriteRenderer::DrawSprite(Texture &texture, glm::vec2 position,
 	glUniformMatrix4fv(viewID, 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(projectionID, 1, GL_FALSE, glm::value_ptr(proj));
 
+	glm::mat4 modelMatrix(1.f);
 	//Just have to add transformation
-	glm::mat4 translate = glm::translate(glm::mat4(1), glm::vec3(position, 0.f));
-	glm::mat4 rotateM = glm::rotate(glm::mat4(1), rotate, glm::vec3(0,0,1));
-	glm::mat4 scale = glm::scale(glm::mat4(1), glm::vec3(size, 0.f));
+	glm::mat4 translate = glm::translate(modelMatrix, glm::vec3(position, 0.f));
+	glm::mat4 rotateM = glm::rotate(modelMatrix, rotate, glm::vec3(0,0,1));
+	glm::mat4 scale = glm::scale(modelMatrix, glm::vec3(size, 0.f));
 
 	glm::mat4 model = translate * rotateM * scale;
 

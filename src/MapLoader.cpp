@@ -40,8 +40,8 @@ void MapLoader::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlwidth,
 	for (GLfloat y = 0; y < height; y++) {
 		for (GLfloat x = 0; x < width; x++) {
 			if (tileData[y][x] == 1) {
-				glm::vec2 pos((x / 6) - 2.5, (y / 6) - 3.3f);
-				glm::vec2 size(0.4f, 0.4f);
+				glm::vec2 pos((x / 6) - 2.5, (y / 6) - 3.0f);
+				glm::vec2 size(0.1f, 0.1f);
 				GameObject wall(pos, size, TextureManager::GetTexture("wall"), glm::vec3(0.f, 0.f, 0.f));
 				this->Bricks.push_back(wall);
 			}
