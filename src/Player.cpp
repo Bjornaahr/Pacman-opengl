@@ -12,6 +12,9 @@ glm::vec2 Player::movement(GLFWwindow *w, double deltaTime) {
 	float rotate;
 	// Move forward
 	
+	Position.x = x;
+	Position.y = y;
+
 	if (glfwGetKey(w, GLFW_KEY_W) == GLFW_PRESS) {
 		direction.x = 0.f;
 		direction.y = 1.f;
