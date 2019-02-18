@@ -66,11 +66,13 @@ void static_code(GLuint &vao, GLuint &vbo, GLuint &ebo, GLuint(&textures)[2]) {
 void dynamic_code(GLFWwindow *w, glm::vec2 *p, double deltaTime)
 {
 	// Use a Vertex Array Object
-	
+	glClearColor(0.15f, 0.15f, 0.15f, 0);
+	glClear(GL_COLOR_BUFFER_BIT);
+
 	*p = player->movement(w, deltaTime);
 	//Draws packman, (Texture, position, size, rotation, color)
 	Renderer->DrawSprite(TextureManager::GetTexture("packman"),
-		*p, glm::vec2(1, 1), 0.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+		*p, glm::vec2(0.7f, 0.7f), 0.0f, glm::vec3(0.0f, 0.0f, 0.0f));
 
 	Levels[Level-1].Draw(*Renderer);
 

@@ -22,8 +22,8 @@ void SpriteRenderer::initRenderData()
 {
 
 	verts[0] = { Vertex{ /*pos*/{ 0.5f, 1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.00f, 0.00f } } };
-	verts[1] = { Vertex{ /*pos*/{ 1.0f, 1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.25f, 0.00f } } };
-	verts[2] = { Vertex{ /*pos*/{ 1.0f, 0.5f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.25f, 0.25f } } };
+	verts[1] = { Vertex{ /*pos*/{ 1.0f, 1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.17f, 0.00f } } };
+	verts[2] = { Vertex{ /*pos*/{ 1.0f, 0.5f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.17f, 0.25f } } };
 	verts[3] = { Vertex{ /*pos*/{ 0.5f, 0.5f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.00f, 0.25f } } };
 
 	glBindVertexArray(this->VAO);
@@ -80,6 +80,14 @@ void SpriteRenderer::initRenderData()
 	);
 
 	glUniform1i(activeShaderProgram.getUniformLocation("texOne"), 0);
+
+	glClearDepth(1.0f);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+
+
 }
 
 
