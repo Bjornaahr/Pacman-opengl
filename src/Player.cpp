@@ -2,8 +2,8 @@
 #define PI (float)3.14159265359
 
 Player::Player() {
-	this->x = 0;
-	this->y = 0;
+	this->x = 2.5;
+	this->y = 2;
 }
 
 glm::vec2 Player::movement(GLFWwindow *w, double deltaTime) {
@@ -11,6 +11,9 @@ glm::vec2 Player::movement(GLFWwindow *w, double deltaTime) {
 	float rotate;
 	// Move forward
 	
+	Position.x = x;
+	Position.y = y;
+
 	if (direction[0]) this->y += 1.f * deltaTime * 1.f;
 	if (direction[1]) this->y -= 1.f * deltaTime * 1.f;
 	if (direction[2]) this->x += 1.f * deltaTime * 1.f;

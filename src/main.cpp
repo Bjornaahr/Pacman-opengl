@@ -32,6 +32,8 @@ GLuint Level;
 
 int WIDTH = 1024, HEIGHT = 768;
 
+GLboolean CheckCollision(GameObject &one, GameObject &two);
+void Collision();
 
 struct Vertex {
 	glm::vec2 position;
@@ -57,7 +59,7 @@ void static_code(GLuint &vao, GLuint &vbo, GLuint &ebo, GLuint(&textures)[2]) {
 	MapLoader one; 
 	one.Load("resources/levels/level0", WIDTH, HEIGHT);
 	Levels.push_back(one);
-	Level = 1;
+	Level = 0;
 
 
 }
@@ -74,8 +76,33 @@ void dynamic_code(GLFWwindow *w, glm::vec2 *p, double deltaTime)
 	Renderer->DrawSprite(TextureManager::GetTexture("packman"),
 		*p, glm::vec2(0.2f, 0.2f), player->rotation(), glm::vec3(0.0f, 0.0f, 0.0f));
 
-	Levels[Level-1].Draw(*Renderer);
+	Levels[Level].Draw(*Renderer);
 
+	Collision();
+
+}
+
+
+GLboolean CheckCollision(GameObject &one, GameObject &two) {
+	// Collision x-axis?
+	bool collisionX = one.Position.x + one.Size.x >= two.Position.x &&
+		two.Position.x + two.Size.x >= one.Position.x;
+	// Collision y-axis?
+	bool collisionY = one.Position.y + one.Size.y >= two.Position.y &&
+		two.Position.y + two.Size.y >= one.Position.y;
+	// Collision only if on both axes
+
+	return collisionX && collisionY;
+}
+
+void Collision() {
+	for (GameObject &box : Levels[Level].Bricks) {
+		if (CheckCollision(*player, box)) {
+			box.Rotation += 0.001;
+			//Do stuff
+		}
+
+	}
 }
 
 

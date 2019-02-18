@@ -4,9 +4,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <GLFW/glfw3.h>
+#include "gameobject.h"
 
 
-class Player {
+class Player : public GameObject{
 private:
 	float x, y;
 	float rotate;
