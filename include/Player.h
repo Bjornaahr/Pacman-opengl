@@ -16,8 +16,10 @@ private:
 public:
 	Player();
 	~Player();
-	glm::vec2 movement(GLFWwindow *w, double DeltaTime);
+	void movement(GLFWwindow *w, bool coll);
 
 	float rotation();
+
+	glm::vec2 translate(double deltaTime);
 
 };

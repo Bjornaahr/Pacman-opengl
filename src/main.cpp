@@ -33,7 +33,7 @@ GLuint Level;
 int WIDTH = 1024, HEIGHT = 768;
 
 GLboolean CheckCollision(GameObject &one, GameObject &two);
-void Collision();
+void Collision(GLFWwindow *w, bool coll);
 
 struct Vertex {
 	glm::vec2 position;
@@ -65,20 +65,21 @@ void static_code(GLuint &vao, GLuint &vbo, GLuint &ebo, GLuint(&textures)[2]) {
 }
 
 
-void dynamic_code(GLFWwindow *w, glm::vec2 *p, double deltaTime)
+void dynamic_code(GLFWwindow *w, double deltaTime)
 {
 	// Use a Vertex Array Object
 	glClearColor(0.15f, 0.15f, 0.15f, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	*p = player->movement(w, deltaTime);
+	player->movement(w, false);
+	Collision(w, true);
 	//Draws packman, (Texture, position, size, rotation, color)
 	Renderer->DrawSprite(TextureManager::GetTexture("packman"),
-		*p, glm::vec2(0.2f, 0.2f), player->rotation(), glm::vec3(0.0f, 0.0f, 0.0f));
+		player->translate(deltaTime), glm::vec2(0.09f, 0.09f), player->rotation(), glm::vec3(0.0f, 0.0f, 0.0f));
 
 	Levels[Level].Draw(*Renderer);
 
-	Collision();
+	
 
 }
 
@@ -91,15 +92,16 @@ GLboolean CheckCollision(GameObject &one, GameObject &two) {
 	bool collisionY = one.Position.y + one.Size.y >= two.Position.y &&
 		two.Position.y + two.Size.y >= one.Position.y;
 	// Collision only if on both axes
-
+	
 	return collisionX && collisionY;
 }
 
-void Collision() {
+void Collision(GLFWwindow *w, bool coll) {
 	for (GameObject &box : Levels[Level].Bricks) {
 		if (CheckCollision(*player, box)) {
 			box.Rotation += 0.001;
 			//Do stuff
+			player->movement(w, coll);
 		}
 
 	}
@@ -148,7 +150,6 @@ int main(void)
 	int nbFrames = 0;
 	double deltaTime = 0;
 	double oldTime = 0;
-	glm::vec2 p = glm::vec2(0.f, 0.f);
 	
 	do {
 		
@@ -169,7 +170,7 @@ int main(void)
 		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		deltaTime = currentTime - oldTime;
-		dynamic_code(window, &p, deltaTime);
+		dynamic_code(window, deltaTime);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
