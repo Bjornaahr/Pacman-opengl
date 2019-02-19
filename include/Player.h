@@ -12,11 +12,12 @@ private:
 	glm::vec2 direction;
 	float x, y;
 	float rotate;
+	float speed;
 
 public:
 	Player();
 	~Player();
-	void movement(GLFWwindow *w, bool coll);
+	void movement(GLFWwindow *w, bool coll, double deltatime);
 
 	float rotation();
 

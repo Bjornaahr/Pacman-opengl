@@ -33,7 +33,7 @@ GLuint Level;
 int WIDTH = 1024, HEIGHT = 768;
 
 GLboolean CheckCollision(GameObject &one, GameObject &two);
-void Collision(GLFWwindow *w, bool coll);
+GLboolean Collision(GLFWwindow *w, bool coll, double deltatime);
 
 struct Vertex {
 	glm::vec2 position;
@@ -71,15 +71,16 @@ void dynamic_code(GLFWwindow *w, double deltaTime)
 	glClearColor(0.15f, 0.15f, 0.15f, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	player->movement(w, false);
-	Collision(w, true);
+	;
+	player->movement(w, Collision(w, true, deltaTime), deltaTime);
+
 	//Draws packman, (Texture, position, size, rotation, color)
 	Renderer->DrawSprite(TextureManager::GetTexture("packman"),
 		player->translate(deltaTime), glm::vec2(0.09f, 0.09f), player->rotation(), glm::vec3(0.0f, 0.0f, 0.0f));
 
 	Levels[Level].Draw(*Renderer);
 
-	
+
 
 }
 
@@ -96,15 +97,13 @@ GLboolean CheckCollision(GameObject &one, GameObject &two) {
 	return collisionX && collisionY;
 }
 
-void Collision(GLFWwindow *w, bool coll) {
+GLboolean Collision(GLFWwindow *w, bool coll, double deltatime) {
 	for (GameObject &box : Levels[Level].Bricks) {
 		if (CheckCollision(*player, box)) {
-			box.Rotation += 0.001;
-			//Do stuff
-			player->movement(w, coll);
+			return true;
 		}
-
 	}
+	return false;
 }
 
 
