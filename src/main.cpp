@@ -82,7 +82,7 @@ void dynamic_code(GLFWwindow *w, double deltaTime)
 
 	//Draws packman, (Texture, position, size, rotation, color)
 	Renderer->DrawSprite(TextureManager::GetTexture("pacman"),
-		player->translate(deltaTime), glm::vec2(0.09f, 0.09f), player->rotation(), glm::vec3(0.0f, 0.0f, 0.0f));
+		player->translate(deltaTime), glm::vec2(.5f, .5f), player->rotation(), glm::vec3(0.0f, 0.0f, 0.0f));
 
 	CollisionPellet();
 

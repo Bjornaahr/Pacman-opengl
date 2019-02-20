@@ -42,15 +42,15 @@ void MapLoader::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlwidth,
 	for (GLfloat y = 0; y < height; y++) {
 		for (GLfloat x = 0; x < width; x++) {
 			if (tileData[y][x] == 1) {
-				glm::vec2 pos((x / 6) - 2.3, (y / 6) - 3.0f);
-				glm::vec2 size(0.1f, 0.1f);
+				glm::vec2 pos(x, y);
+				glm::vec2 size(0.6f, 0.6f);
 				GameObject wall(pos, size, TextureManager::GetTexture("wall"), glm::vec3(0.f, 0.f, 0.f));
 				this->Bricks.push_back(wall);
 			}
 
 			if (tileData[y][x] == 0) {
-				glm::vec2 pos((x / 6) - 2.3, (y / 6) - 3.0f);
-				glm::vec2 size(0.01f, 0.01f);
+				glm::vec2 pos(x, y);
+				glm::vec2 size(0.1f, 0.1f);
 				GameObject pellet(pos, size, TextureManager::GetTexture("pellet"), glm::vec3(0.f, 0.f, 0.f));
 				this->Pellets.push_back(pellet);
 			}

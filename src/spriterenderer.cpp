@@ -102,14 +102,13 @@ void SpriteRenderer::DrawSprite(Texture &texture, glm::vec2 position,
 	viewID = activeShaderProgram.getUniformLocation("view");
 	projectionID = activeShaderProgram.getUniformLocation("projection");
 
-	glm::mat4 view = glm::lookAt(glm::vec3(0, 0, 2), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	glm::mat4 view = glm::lookAt(glm::vec3(13.5f, 18, 13), glm::vec3(13.5f, 18, 0), glm::vec3(0, 1, 0));
 	glm::mat4 proj = glm::perspective(PI / 1.78f, (GLfloat)1024 / (GLfloat)760, 0.1f, -10.0f);
 
 	glUniformMatrix4fv(viewID, 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(projectionID, 1, GL_FALSE, glm::value_ptr(proj));
 
 	glm::mat4 modelMatrix(1.f);
-	//Just have to add transformation
 	glm::mat4 translate = glm::translate(modelMatrix, glm::vec3(position, 0.f));
 	glm::mat4 rotateM = glm::rotate(modelMatrix, rotate, glm::vec3(0,0,1));
 	glm::mat4 scale = glm::scale(modelMatrix, glm::vec3(size, 0.f));
