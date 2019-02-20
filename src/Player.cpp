@@ -16,14 +16,16 @@ void Player::movement(GLFWwindow *w, bool coll, double deltatime) {
 	float t = 1.f;
 	float rotate;
 	// Move forward
-	
+	float divisor = 128;
+		Position.x = x;
+		Position.y = y;
 
 		if (glfwGetKey(w, GLFW_KEY_W) == GLFW_PRESS) {
 			direction.x = 0.f;
 			direction.y = 1.f;
 			this->rotate = PI;
 			speed = 5.f;
-			x = floor(x / t) * t + t / 2;
+			x = floor(x / t) * t + t / divisor;
 		}
 		// Move backward
 		if (glfwGetKey(w, GLFW_KEY_S) == GLFW_PRESS) {
@@ -31,7 +33,7 @@ void Player::movement(GLFWwindow *w, bool coll, double deltatime) {
 			direction.y = -1.f;
 			this->rotate = 0;
 			speed = 5.f;
-			x = floor(x / t) * t + t / 2;
+			x = floor(x / t) * t + t / divisor;
 		}
 		// Strafe right
 		if (glfwGetKey(w, GLFW_KEY_D) == GLFW_PRESS) {
@@ -39,7 +41,7 @@ void Player::movement(GLFWwindow *w, bool coll, double deltatime) {
 			direction.y = 0.f;
 			this->rotate = PI / 2;
 			speed = 5.f;
-			y = floor(y / t) * t + t / 2;
+			y = floor(y / t) * t + t / divisor;
 		}
 		// Strafe left
 		if (glfwGetKey(w, GLFW_KEY_A) == GLFW_PRESS) {
@@ -47,10 +49,9 @@ void Player::movement(GLFWwindow *w, bool coll, double deltatime) {
 			direction.y = 0.f;
 			this->rotate = (3 * PI) / 2;
 			speed = 5.f;
-			y = floor(y / t) * t + t / 2;
+			y = floor(y / t) * t + t / divisor;
 		}
-		Position.x = x;
-		Position.y = y;
+
 		// Should work as collision detection
 		// needs some more changes to make it work
 		// namely have tiledata be correct
@@ -64,7 +65,7 @@ void Player::movement(GLFWwindow *w, bool coll, double deltatime) {
 			}
 			else {
 				direction.y = 0.0f;
-				y = floor(y / t) * t + t / 2;
+				y = floor(y / t) * t + t / divisor;
 			}
 		}
 		if (direction.y == -1) {
@@ -72,11 +73,11 @@ void Player::movement(GLFWwindow *w, bool coll, double deltatime) {
 			int y1 = floor(y / t);
 			if (tileData[y1 - 1][x1] == 0) {
 				direction.x = 0.0f;
-				direction.y = 1.0f;
+				direction.y = -1.0f;
 			}
 			else {
 				direction.y = 0.0f;
-				y = floor(y / t) * t + t / 2;
+				y = floor(y / t) * t + t / divisor;
 			}
 		}
 		if (direction.x == 1) {
@@ -88,7 +89,7 @@ void Player::movement(GLFWwindow *w, bool coll, double deltatime) {
 			}
 			else {
 				direction.x = 0.0f;
-				x = floor(x / t) * t + t / 2;
+				x = floor(x / t) * t + t / divisor;
 			}
 		}
 		if (direction.x == -1) {
@@ -100,7 +101,7 @@ void Player::movement(GLFWwindow *w, bool coll, double deltatime) {
 			}
 			else {
 				direction.x = 0.0f;
-				x = floor(x / t) * t + t / 2;
+				x = floor(x / t) * t + t / divisor;
 			}
 		}
 		
