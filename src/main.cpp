@@ -62,7 +62,7 @@ void static_code(GLuint &vao, GLuint &vbo, GLuint &ebo, GLuint(&textures)[2]) {
 
 
 	MapLoader one; 
-	one.Load("resources/levels/level0", WIDTH, HEIGHT);
+	one.Load("resources/levels/level0", WIDTH, HEIGHT, player);
 	Levels.push_back(one);
 	Level = 0;
 

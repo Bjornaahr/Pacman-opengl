@@ -5,11 +5,11 @@
 #include <sstream>
 #include <vector>
 
-void MapLoader::Load(const GLchar *file, GLuint width, GLuint height) {
+
+void MapLoader::Load(const GLchar *file, GLuint width, GLuint height, Player *p) {
 
 	this->Bricks.clear();
 	this->Pellets.clear();
-
 	GLuint tileCode;
 	MapLoader level;
 	std::string line;
@@ -26,6 +26,7 @@ void MapLoader::Load(const GLchar *file, GLuint width, GLuint height) {
 			tileData.push_back(row);
 		}
 		if (tileData.size() > 0)
+			p->addTileToPlayer(tileData);
 			this->init(tileData, width, height);
 	}
 }

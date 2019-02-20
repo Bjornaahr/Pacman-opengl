@@ -1,4 +1,5 @@
 #pragma once
+#include "Player.h"
 #include "gameobject.h"
 #include "spriterenderer.h"
 #include <vector>
@@ -14,7 +15,7 @@ public:
 
 	MapLoader() { }
 	//Loads level from file
-	void Load(const GLchar *file, GLuint width, GLuint height);
+	void Load(const GLchar *file, GLuint width, GLuint height, Player *p);
 
 	void Draw(SpriteRenderer &renderer);
 

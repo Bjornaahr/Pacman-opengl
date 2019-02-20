@@ -1,5 +1,7 @@
+
 #include "player.h"
 #include <iostream>
+#include <GFX/gfx.h>
 #define PI (float)3.14159265359
 
 Player::Player() {
@@ -11,36 +13,18 @@ Player::Player() {
 }
 
 void Player::movement(GLFWwindow *w, bool coll, double deltatime) {
-	
+	float t = 0.1f;
 	float rotate;
 	// Move forward
 	
 	Position.x = x;
 	Position.y = y;
-	if(coll) {
-
-	if (direction.x == -1.f) {
-		this->x += -direction.x * 0.03f;
-	}
-	else if (direction.x == 1.f) {
-		this->x -= direction.x * 0.03f;
-	}
-	else if (direction.y == -1.f) {
-		this->y += -direction.y * 0.03f;
-	}
-	else if (direction.y == 1.f) {
-		this->y += -direction.y * 0.03f;
-	}
-
-	speed = 0.f;
-
-	}
-	else {
 		if (glfwGetKey(w, GLFW_KEY_W) == GLFW_PRESS) {
 			direction.x = 0.f;
 			direction.y = 1.f;
 			this->rotate = PI;
 			speed = 1.f;
+			x = floor(x / t) * t + t / 2;
 		}
 		// Move backward
 		if (glfwGetKey(w, GLFW_KEY_S) == GLFW_PRESS) {
@@ -48,6 +32,7 @@ void Player::movement(GLFWwindow *w, bool coll, double deltatime) {
 			direction.y = -1.f;
 			this->rotate = 0;
 			speed = 1.f;
+			x = floor(x / t) * t + t / 2;
 		}
 		// Strafe right
 		if (glfwGetKey(w, GLFW_KEY_D) == GLFW_PRESS) {
@@ -55,6 +40,7 @@ void Player::movement(GLFWwindow *w, bool coll, double deltatime) {
 			direction.y = 0.f;
 			this->rotate = PI / 2;
 			speed = 1.f;
+			y = floor(y / t) * t + t / 2;
 		}
 		// Strafe left
 		if (glfwGetKey(w, GLFW_KEY_A) == GLFW_PRESS) {
@@ -62,14 +48,74 @@ void Player::movement(GLFWwindow *w, bool coll, double deltatime) {
 			direction.y = 0.f;
 			this->rotate = (3 * PI) / 2;
 			speed = 1.f;
+			y = floor(y / t) * t + t / 2;
 		}
+		// Should work as collision detection
+		// needs some more changes to make it work
+		// namely have tiledata be correct
+		
+		if (direction.y == 1) {
+			int x1 = floor(x / t);
+			int y1 = floor(y / t);
+			if (tileData[x1][y1 + 1] == 0) {
+				direction.x = 0.0f;
+				direction.y = 1.0f;
+			}
+			else {
+				direction.y = 0.0f;
+				y = floor(y / t) * t + t / 2;
+			}
+		}
+		if (direction.y == -1) {
+			int x1 = floor(x / t);
+			int y1 = floor(y / t);
+			if (tileData[x1][y1 - 1] == 0) {
+				direction.x = 0.0f;
+				direction.y = 1.0f;
+			}
+			else {
+				direction.y = 0.0f;
+				y = floor(y / t) * t + t / 2;
+			}
+		}
+		if (direction.x == 1) {
+			int x1 = floor(x / t);
+			int y1 = floor(y / t);
+			if (tileData[x1 + 1][y1] == 0) {
+				direction.x = 1.0f;
+				direction.y = .0f;
+			}
+			else {
+				direction.x = 0.0f;
+				x = floor(x / t) * t + t / 2;
+			}
+		}
+		if (direction.x == -1) {
+			int x1 = floor(x / t);
+			int y1 = floor(y / t);
+			if (tileData[x1 - 1][y1] == 0) {
+				direction.x = -1.0f;
+				direction.y = 0.0f;
+			}
+			else {
+				direction.x = 0.0f;
+				x = floor(x / t) * t + t / 2;
+			}
+		}
+		
 
-	}
+	
 	
 }
 
 float Player::rotation() {
 	return this->rotate;
+}
+
+void Player::addTileToPlayer(std::vector<std::vector<GLuint>> tile)
+{
+	tileData = tile;
+	GFX_INFO("tiledata: ", tileData[0][0]);
 }
 
 glm::vec2 Player::translate(double deltaTime) {

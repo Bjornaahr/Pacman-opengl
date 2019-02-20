@@ -1,5 +1,5 @@
 #pragma once
-
+#include <vector>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -13,6 +13,7 @@ private:
 	float x, y;
 	float rotate;
 	float speed;
+	std::vector<std::vector<GLuint>> tileData;
 
 public:
 	Player();
@@ -20,7 +21,7 @@ public:
 	void movement(GLFWwindow *w, bool coll, double deltatime);
 
 	float rotation();
-
+	void addTileToPlayer(std::vector<std::vector<GLuint>> tile);
 	glm::vec2 translate(double deltaTime);
 
 };
