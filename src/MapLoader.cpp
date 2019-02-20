@@ -8,6 +8,7 @@
 void MapLoader::Load(const GLchar *file, GLuint width, GLuint height) {
 
 	this->Bricks.clear();
+	this->Pellets.clear();
 
 	GLuint tileCode;
 	MapLoader level;
@@ -45,6 +46,14 @@ void MapLoader::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlwidth,
 				GameObject wall(pos, size, TextureManager::GetTexture("wall"), glm::vec3(0.f, 0.f, 0.f));
 				this->Bricks.push_back(wall);
 			}
+
+			if (tileData[y][x] == 0) {
+				glm::vec2 pos((x / 6) - 2.3, (y / 6) - 3.0f);
+				glm::vec2 size(0.01f, 0.01f);
+				GameObject pellet(pos, size, TextureManager::GetTexture("pellet"), glm::vec3(0.f, 0.f, 0.f));
+				this->Pellets.push_back(pellet);
+			}
+
 		}
 	}
 
@@ -53,6 +62,12 @@ void MapLoader::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlwidth,
 void MapLoader::Draw(SpriteRenderer &renderer) {
 	for (GameObject &tile : this->Bricks) {
 		tile.Draw(renderer);
+	}
+
+	for (GameObject &pellet : this->Pellets) {
+		if (!pellet.isDestoroyed) {
+			pellet.Draw(renderer);
+		}
 	}
 }
 

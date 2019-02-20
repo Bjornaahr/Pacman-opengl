@@ -5,8 +5,7 @@
 Player::Player() {
 	this->x = 2.5;
 	this->y = 2;
-	this->Size = glm::vec2(0.1f, 0.1f);
-
+	this->Size = glm::vec2(0.09f, 0.09f);
 	direction = glm::vec2(0.f, 0.f);
 	speed = 1.f;
 }
@@ -21,16 +20,16 @@ void Player::movement(GLFWwindow *w, bool coll, double deltatime) {
 	if(coll) {
 
 	if (direction.x == -1.f) {
-		this->x += -direction.x * 0.01f;
+		this->x += -direction.x * 0.03f;
 	}
 	else if (direction.x == 1.f) {
-		this->x -= direction.x * 0.01f;
+		this->x -= direction.x * 0.03f;
 	}
 	else if (direction.y == -1.f) {
-		this->y += -direction.y * 0.01f;
+		this->y += -direction.y * 0.03f;
 	}
 	else if (direction.y == 1.f) {
-		this->y += -direction.y * 0.01f;
+		this->y += -direction.y * 0.03f;
 	}
 
 	speed = 0.f;

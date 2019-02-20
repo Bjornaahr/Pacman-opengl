@@ -9,6 +9,8 @@ class MapLoader
 {
 public:
 	std::vector<GameObject> Bricks;
+	std::vector<GameObject> Pellets;
+
 
 	MapLoader() { }
 	//Loads level from file

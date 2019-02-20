@@ -13,7 +13,7 @@ public:
 	GLfloat Rotation;
 	//Texture
 	Texture Sprite;
-
+	GLboolean isDestoroyed = false;
 	void Draw(SpriteRenderer &renderer);
 
 	//Constructors

@@ -34,6 +34,9 @@ int WIDTH = 1024, HEIGHT = 768;
 
 GLboolean CheckCollision(GameObject &one, GameObject &two);
 GLboolean Collision(GLFWwindow *w, bool coll, double deltatime);
+void CollisionPellet();
+
+int Score;
 
 struct Vertex {
 	glm::vec2 position;
@@ -52,8 +55,10 @@ void static_code(GLuint &vao, GLuint &vbo, GLuint &ebo, GLuint(&textures)[2]) {
 
 
 	//Loads texture (Path, name for future refrence)
-	TextureManager::LoadTexture("resources/assets/pacman.png", "packman");
+	TextureManager::LoadTexture("resources/assets/pacman.png", "pacman");
 	TextureManager::LoadTexture("resources/assets/block.png", "wall");
+	TextureManager::LoadTexture("resources/assets/pellet.png", "pellet");
+
 
 
 	MapLoader one; 
@@ -71,16 +76,15 @@ void dynamic_code(GLFWwindow *w, double deltaTime)
 	glClearColor(0.15f, 0.15f, 0.15f, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	;
 	player->movement(w, Collision(w, true, deltaTime), deltaTime);
-
-	//Draws packman, (Texture, position, size, rotation, color)
-	Renderer->DrawSprite(TextureManager::GetTexture("packman"),
-		player->translate(deltaTime), glm::vec2(0.09f, 0.09f), player->rotation(), glm::vec3(0.0f, 0.0f, 0.0f));
 
 	Levels[Level].Draw(*Renderer);
 
+	//Draws packman, (Texture, position, size, rotation, color)
+	Renderer->DrawSprite(TextureManager::GetTexture("pacman"),
+		player->translate(deltaTime), glm::vec2(0.09f, 0.09f), player->rotation(), glm::vec3(0.0f, 0.0f, 0.0f));
 
+	CollisionPellet();
 
 }
 
@@ -104,6 +108,15 @@ GLboolean Collision(GLFWwindow *w, bool coll, double deltatime) {
 		}
 	}
 	return false;
+}
+
+void CollisionPellet() {
+	for (GameObject &pellet : Levels[Level].Pellets) {
+		if (CheckCollision(*player, pellet) && !pellet.isDestoroyed) {
+			pellet.isDestoroyed = true;
+			Score++;
+		}
+	}
 }
 
 
