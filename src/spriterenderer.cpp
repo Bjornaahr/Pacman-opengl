@@ -22,8 +22,8 @@ void SpriteRenderer::initRenderData()
 {
 
 	verts[0] = { Vertex{ /*pos*/{ -1.0f, 1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.00f, 0.00f } } };
-	verts[1] = { Vertex{ /*pos*/{ 1.0f, 1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.17f, 0.00f } } };
-	verts[2] = { Vertex{ /*pos*/{ 1.0f, -1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.17f, 0.25f } } };
+	verts[1] = { Vertex{ /*pos*/{ 1.0f, 1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.166666667f, 0.00f } } };
+	verts[2] = { Vertex{ /*pos*/{ 1.0f, -1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.166666667f, 0.25f } } };
 	verts[3] = { Vertex{ /*pos*/{ -1.0f, -1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.00f, 0.25f } } };
 
 	glBindVertexArray(this->VAO);
@@ -93,14 +93,16 @@ void SpriteRenderer::initRenderData()
 
 
 void SpriteRenderer::DrawSprite(Texture &texture, glm::vec2 position,
-	glm::vec2 size, GLfloat rotate, glm::vec3 color)
+	glm::vec2 size, GLfloat rotate, glm::vec3 color, glm::vec2 uvShift)
 {
 
-	GLint modelID, viewID, projectionID;;
+	GLint modelID, viewID, projectionID, TexCoordShiftLoc;
 
 	modelID = activeShaderProgram.getUniformLocation("model");
 	viewID = activeShaderProgram.getUniformLocation("view");
 	projectionID = activeShaderProgram.getUniformLocation("projection");
+	//Change in UV coordinates
+	TexCoordShiftLoc = activeShaderProgram.getUniformLocation("texcoordshift");
 
 	glm::mat4 view = glm::lookAt(glm::vec3(13.5f, 18, 13), glm::vec3(13.5f, 18, 0), glm::vec3(0, 1, 0));
 	glm::mat4 proj = glm::perspective(PI / 1.78f, (GLfloat)1024 / (GLfloat)760, 0.1f, -10.0f);
@@ -116,19 +118,8 @@ void SpriteRenderer::DrawSprite(Texture &texture, glm::vec2 position,
 	glm::mat4 model = translate * rotateM * scale;
 
 	glUniformMatrix4fv(modelID, 1, GL_FALSE, glm::value_ptr(model));
-	
-	/*
-	Have frames from Animationcontroller inserted (currently including the controller in main breaks it)
-	change verts uv to frame[1], frame[2] and so on
-
-	verts[1].uv = frame[1];
-	verts[2].uv = frame[2];
-	verts[3].uv = frame[3];
-	verts[4].uv = frame[4];
-
-	*/
-
-	
+	//Changes UV coordinates
+	glUniform2fv(TexCoordShiftLoc, 1, glm::value_ptr(uvShift));
 
 	glActiveTexture(GL_TEXTURE0);
 	texture.Bind();

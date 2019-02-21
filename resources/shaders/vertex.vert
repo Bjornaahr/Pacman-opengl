@@ -5,6 +5,7 @@
 in vec4 position;
 in vec3 color;
 in vec2 texcoord;
+uniform vec2 texcoordshift;
 out vec3 Color;
 out vec2 Texcoord;
 
@@ -15,7 +16,7 @@ uniform mat4 projection =mat4(1);
 void main()
 {
     Color = color;
-    Texcoord = texcoord;
+    Texcoord = texcoord + texcoordshift;
 	gl_Position = projection * view * model * position; 
 	
 	}

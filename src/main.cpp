@@ -46,15 +46,11 @@ struct Vertex {
 	glm::vec2 uv;
 };
 
-void static_code(GLuint &vao, GLuint &vbo, GLuint &ebo, GLuint(&textures)[2]) {
+void static_code() {
 
 	//Creates a spriterenderer
 	Renderer = new SpriteRenderer();
 	player = new Player();
-
-	//All of this will be moved later
-
-
 
 	//Loads texture (Path, name for future refrence)
 	TextureManager::LoadTexture("resources/assets/pacman.png", "pacman");
@@ -63,9 +59,12 @@ void static_code(GLuint &vao, GLuint &vbo, GLuint &ebo, GLuint(&textures)[2]) {
 
 
 
-	MapLoader one; 
+	MapLoader one;
+	//Loads map WIDTH and HEIGHT dosn't do anything
 	one.Load("resources/levels/level0", WIDTH, HEIGHT, player);
+	//Add level to level vector
 	Levels.push_back(one);
+	//Sets level to 0 getting ready to load the correct level
 	Level = 0;
 
 
@@ -78,23 +77,26 @@ void dynamic_code(GLFWwindow *w, double deltaTime)
 	glClearColor(0.15f, 0.15f, 0.15f, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	//Moves the player also checks for colision against wall
 	player->movement(w, Collision(w, true, deltaTime), deltaTime);
 
+	//Draws level
 	Levels[Level].Draw(*Renderer);
 
-	//Draws packman, (Texture, position, size, rotation, color)
+	//Draws packman, (Texture, position, size, rotation, color, shift in UV(for animations))
 	Renderer->DrawSprite(TextureManager::GetTexture("pacman"),
-		player->translate(deltaTime), glm::vec2(.5f, .5f), player->rotation(), glm::vec3(0.0f, 0.0f, 0.0f));
-
+		player->translate(deltaTime), glm::vec2(.5f, .5f), player->rotation(), glm::vec3(0.0f, 0.0f, 0.0f), player->animation(deltaTime));
+	//Checks for collision against pellets
 	CollisionPellet();
-
+	//Check if amount of pellets destoyed is enough to complete level
 	if (Levels[Level].Pelletamount == PelletsDestoyed) {
+		//Set level to completed
 		bool comp = Levels[Level].IsCompleted();
 	}
 
 }
 
-
+//Check for collision between two GameObjects
 GLboolean CheckCollision(GameObject &one, GameObject &two) {
 	// Collision x-axis?
 	bool collisionX = one.Position.x + one.Size.x >= two.Position.x &&
@@ -103,7 +105,6 @@ GLboolean CheckCollision(GameObject &one, GameObject &two) {
 	bool collisionY = one.Position.y + one.Size.y >= two.Position.y &&
 		two.Position.y + two.Size.y >= one.Position.y;
 	// Collision only if on both axes
-	
 	return collisionX && collisionY;
 }
 
@@ -116,10 +117,15 @@ GLboolean Collision(GLFWwindow *w, bool coll, double deltatime) {
 	return false;
 }
 
+//Checks for collision against pellets
 void CollisionPellet() {
+	//Loops through all pellets in current level
 	for (GameObject &pellet : Levels[Level].Pellets) {
+		//Check for collision
 		if (CheckCollision(*player, pellet) && !pellet.isDestoroyed) {
+			//Destorys pellet
 			pellet.isDestoroyed = true;
+			//Increase score and pellets destoyed
 			Score++;
 			PelletsDestoyed++;
 		}
@@ -153,17 +159,13 @@ int main(void)
 	}
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 	glfwSwapInterval(1);
-	GLuint vao;
-	GLuint vbo;
-	GLuint ebo;
-	GLuint textures[2];
 	
 	// Set OpenGL options
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	static_code(vao,vbo, ebo, textures);
+	static_code();
 	glClearColor(1,1,1,1);
 	double lastTime = glfwGetTime();
 	int nbFrames = 0;

@@ -10,6 +10,15 @@ Player::Player() {
 	this->Size = glm::vec2(0.09f, 0.09f);
 	direction = glm::vec2(0.f, 0.f);
 	speed = 1.f;
+
+	//Numbers representing UV coordinates for spritesheet animation
+	animationFrames[0] = glm::vec2(0, 0);
+	animationFrames[1] = glm::vec2(0.16666666666f, 0);
+	animationFrames[2] = glm::vec2(0.33333333332f, 0);
+	animationFrames[3] = glm::vec2(0.49999999998, 0);
+	currentFrame = 0;
+
+
 }
 
 
@@ -129,5 +138,38 @@ glm::vec2 Player::translate(double deltaTime) {
 	this->y += direction.y * deltaTime * speed;
 	return glm::vec2(this->x, this->y);
 }
+
+
+//Deals with player animation
+glm::vec2 Player::animation(double deltaTime) {
+	//Counts up on delta
+	delta++;
+
+	//Check if on last frame
+	if (currentFrame == 3) {
+		forward = false;
+	}
+	//Check if on first frame
+	else if (currentFrame == 0) {
+		forward = true;
+	}
+	//check if delta modolu speed is 0
+	if (fmod(delta, 2) == 0) {
+		//Resets delta
+		delta = 0;
+		//Check if to play animation forward or backwards
+		if (forward == true) {
+			//Returns currentframe and increment to next frame
+			return animationFrames[currentFrame++];
+		} else return animationFrames[currentFrame--];
+	}
+	else {
+		//Returns currentframe until time
+		return animationFrames[currentFrame];
+	}
+
+}
+
+
 
 

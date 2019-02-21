@@ -14,6 +14,14 @@ private:
 	float rotate;
 	float speed;
 	std::vector<std::vector<GLuint>> tileData;
+	//Frames in animation UV
+	glm::vec2 animationFrames[4];
+	//Current frame to display
+	int currentFrame;
+	//Number to check when we can change animation frame
+	double delta;
+	//Bool to check if we play animation backwards or forwards
+	bool forward;
 
 public:
 	Player();
@@ -23,5 +31,6 @@ public:
 	float rotation();
 	void addTileToPlayer(std::vector<std::vector<GLuint>> tile);
 	glm::vec2 translate(double deltaTime);
+	glm::vec2 animation(double deltaTime);
 
 };
