@@ -12,6 +12,10 @@ Player::Player() {
 	speed = 1.f;
 }
 
+
+// Source for how we decided to do collision / cenetring
+// https://www.dropbox.com/s/pbcokfxxdwsvcr7/Pacman.rar?file_subpath=%2FPacman%2FAIE+Basic+Framework2
+//
 void Player::movement(GLFWwindow *w, bool coll, double deltatime) {
 	float t = 1.f;
 	float rotate;
