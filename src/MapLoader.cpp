@@ -4,6 +4,8 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <GFX/gfx.h>
+
 
 
 void MapLoader::Load(const GLchar *file, GLuint width, GLuint height, Player *p) {
@@ -27,6 +29,7 @@ void MapLoader::Load(const GLchar *file, GLuint width, GLuint height, Player *p)
 		}
 		if (tileData.size() > 0)
 			p->addTileToPlayer(tileData);
+			Pelletamount = 0;
 			this->init(tileData, width, height);
 	}
 }
@@ -53,6 +56,7 @@ void MapLoader::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlwidth,
 				glm::vec2 size(0.1f, 0.1f);
 				GameObject pellet(pos, size, TextureManager::GetTexture("pellet"), glm::vec3(0.f, 0.f, 0.f));
 				this->Pellets.push_back(pellet);
+				++Pelletamount;
 			}
 
 		}
@@ -74,5 +78,6 @@ void MapLoader::Draw(SpriteRenderer &renderer) {
 
 GLboolean MapLoader::IsCompleted()
 {
+	GFX_INFO("Level completed!");
 	return 0;
 }

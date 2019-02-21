@@ -11,7 +11,7 @@ class MapLoader
 public:
 	std::vector<GameObject> Bricks;
 	std::vector<GameObject> Pellets;
-
+	int Pelletamount;
 
 	MapLoader() { }
 	//Loads level from file

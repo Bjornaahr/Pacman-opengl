@@ -21,8 +21,9 @@
 #include "gameobject.h"
 #include "maploader.h"
 
-
-
+//We borrowed a lot of code and examples from
+//https://learnopengl.com/
+//
 
 SpriteRenderer  *Renderer;
 Player *player;
@@ -31,12 +32,13 @@ std::vector<MapLoader> Levels;
 GLuint Level;
 
 int WIDTH = 1024, HEIGHT = 768;
+int Score;
+int PelletsDestoyed;
 
 GLboolean CheckCollision(GameObject &one, GameObject &two);
 GLboolean Collision(GLFWwindow *w, bool coll, double deltatime);
 void CollisionPellet();
 
-int Score;
 
 struct Vertex {
 	glm::vec2 position;
@@ -86,6 +88,10 @@ void dynamic_code(GLFWwindow *w, double deltaTime)
 
 	CollisionPellet();
 
+	if (Levels[Level].Pelletamount == PelletsDestoyed) {
+		bool comp = Levels[Level].IsCompleted();
+	}
+
 }
 
 
@@ -115,6 +121,7 @@ void CollisionPellet() {
 		if (CheckCollision(*player, pellet) && !pellet.isDestoroyed) {
 			pellet.isDestoroyed = true;
 			Score++;
+			PelletsDestoyed++;
 		}
 	}
 }
