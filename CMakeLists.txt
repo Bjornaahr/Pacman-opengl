@@ -59,6 +59,7 @@ target_include_directories( ${PROJECT}
     PRIVATE ${LIBDIR}/glew/include  
     PRIVATE ${LIBDIR}/glm
     PRIVATE ${LIBDIR}/glfw/include
+	PRIVATE ${LIBDIR}/ImGUI/
     PRIVATE ${LIBDIR}/soil/src
   # PRIVATE ${LIBDIR}/imgui
 )

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <time.h>
+#include <imgui.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -27,6 +28,7 @@
 
 SpriteRenderer  *Renderer;
 Player *player;
+Player *ghost[4];
 
 std::vector<MapLoader> Levels;
 GLuint Level;
@@ -51,6 +53,8 @@ void static_code() {
 	//Creates a spriterenderer
 	Renderer = new SpriteRenderer();
 	player = new Player();
+	for (int i = 0; i < 4; i++) ghost[i] = new Player();
+	
 
 	//Loads texture (Path, name for future refrence)
 	TextureManager::LoadTexture("resources/assets/pacman.png", "pacman");
@@ -78,7 +82,7 @@ void dynamic_code(GLFWwindow *w, double deltaTime)
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	//Moves the player also checks for colision against wall
-	player->movement(w, Collision(w, true, deltaTime), deltaTime);
+	player->movement(w, true, deltaTime);
 
 	//Draws level
 	Levels[Level].Draw(*Renderer);
@@ -106,15 +110,6 @@ GLboolean CheckCollision(GameObject &one, GameObject &two) {
 		two.Position.y + two.Size.y >= one.Position.y;
 	// Collision only if on both axes
 	return collisionX && collisionY;
-}
-
-GLboolean Collision(GLFWwindow *w, bool coll, double deltatime) {
-	for (GameObject &box : Levels[Level].Bricks) {
-		if (CheckCollision(*player, box)) {
-			return true;
-		}
-	}
-	return false;
 }
 
 //Checks for collision against pellets
@@ -164,16 +159,15 @@ int main(void)
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+	
 	static_code();
 	glClearColor(1,1,1,1);
 	double lastTime = glfwGetTime();
 	int nbFrames = 0;
 	double deltaTime = 0;
 	double oldTime = 0;
-	
+	/// Needs better animation/movement based on time so it is smooth at all times
 	do {
-		
 		// Measure speed
 		double currentTime = glfwGetTime();
 		nbFrames++;

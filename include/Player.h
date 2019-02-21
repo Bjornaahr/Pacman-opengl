@@ -24,9 +24,10 @@ private:
 	bool forward;
 
 public:
+	/// As player and ghost is using the same class. make seperate constructors for both
 	Player();
 	~Player();
-	void movement(GLFWwindow *w, bool coll, double deltatime);
+	void movement(GLFWwindow *w, bool player, double deltatime);
 
 	float rotation();
 	void addTileToPlayer(std::vector<std::vector<GLuint>> tile);

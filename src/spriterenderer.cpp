@@ -91,7 +91,9 @@ void SpriteRenderer::initRenderData()
 }
 
 
-
+/// This is probably an ineffiecent way to draw as it will be a seperate draw call for every object atm
+/// Maybe have a multithreaded physic call then a singual call for drawing
+/// Or add more parameters to draw
 void SpriteRenderer::DrawSprite(Texture &texture, glm::vec2 position,
 	glm::vec2 size, GLfloat rotate, glm::vec3 color, glm::vec2 uvShift)
 {
