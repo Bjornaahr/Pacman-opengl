@@ -3,6 +3,9 @@
 #include <iostream>
 #include <time.h>
 #include <imgui.h>
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -39,6 +42,11 @@ int Score;
 int PelletsDestoyed;
 int Lives = 3;
 
+bool show_demo_window = true;
+bool show_another_window = false;
+ImVec4 clear_color = ImVec4(0.4f, 0.55f, 0.60f, 1.00f);
+
+
 GLboolean CheckCollision(GameObject &one, GameObject &two);
 GLboolean Collision(GLFWwindow *w, bool coll, double deltatime);
 void Collisions();
@@ -51,6 +59,7 @@ struct Vertex {
 };
 
 void static_code() {
+
 
 	//Creates a spriterenderer
 	Renderer = new SpriteRenderer();
@@ -87,6 +96,8 @@ void dynamic_code(GLFWwindow *w, double deltaTime)
 
 	//Moves the player also checks for colision against wall
 	player->movement(w, deltaTime);
+
+
 
 	for (int i = 0; i < 4; i++) ghosts[i]->movement(w, deltaTime);
 
@@ -153,6 +164,7 @@ int main(void)
 	if (!glfwInit()) {
 		GFX_ERROR("Failed to initialize GLFW\n");
 	}
+	const char* glsl_version = "#version 330";
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -178,7 +190,14 @@ int main(void)
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui::StyleColorsDark();
+	ImGui_ImplOpenGL3_Init(glsl_version);
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+
 	static_code();
 	glClearColor(1,1,1,1);
 	double lastTime = glfwGetTime();
@@ -213,6 +232,8 @@ int main(void)
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
 		glfwWindowShouldClose(window) == 0);
 	glfwDestroyWindow(window);
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 
 	glfwTerminate();
 	return 0;

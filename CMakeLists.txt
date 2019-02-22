@@ -50,6 +50,13 @@ target_sources(${PROJECT}
 	 PRIVATE ${SRCDIR}/spriterenderer.cpp
 	 PRIVATE ${SRCDIR}/Ghost.cpp
 
+	  PRIVATE ${LIBDIR}/ImGUI/imgui_demo.cpp
+	  PRIVATE ${LIBDIR}/ImGUI/imgui_draw.cpp
+	  PRIVATE ${LIBDIR}/ImGUI/imgui_impl_glfw.cpp
+	  PRIVATE ${LIBDIR}/ImGUI/imgui_impl_opengl3.cpp
+	  PRIVATE ${LIBDIR}/ImGUI/imgui_widgets.cpp
+	  PRIVATE ${LIBDIR}/ImGUI/imgui.cpp
+
 
 )
 
@@ -63,7 +70,6 @@ target_include_directories( ${PROJECT}
     PRIVATE ${LIBDIR}/glfw/include
 	PRIVATE ${LIBDIR}/ImGUI/
     PRIVATE ${LIBDIR}/soil/src
-  # PRIVATE ${LIBDIR}/imgui
 )
 
 # enlist all the resources already in the build directory
