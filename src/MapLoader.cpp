@@ -51,7 +51,7 @@ void MapLoader::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlwidth,
 
 			if (tileData[y][x] == 1) {
 				glm::vec2 pos(x, y);
-				glm::vec2 size(0.6f, 0.6f);
+				glm::vec2 size(0.5f, 0.5f);
 				GameObject wall(pos, size, TextureManager::GetTexture("wall"));
 				this->Bricks.push_back(wall);
 			}

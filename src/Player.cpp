@@ -7,7 +7,7 @@
 Player::Player() {
 	this->x = 2.0f;
 	this->y = 4.0f;
-	this->Size = glm::vec2(0.09f, 0.09f);
+	this->Size = glm::vec2(0.5f, 0.5f);
 	direction = glm::vec2(0.f, 0.f);
 	speed = 1.f;
 
@@ -26,10 +26,10 @@ Player::Player() {
 // https://www.dropbox.com/s/pbcokfxxdwsvcr7/Pacman.rar?file_subpath=%2FPacman%2FAIE+Basic+Framework2
 //
 void Player::movement(GLFWwindow *w, double deltatime) {
-	float t = 1.f;
+	float t = 1.0f;
 	float rotate;
 	// Move forward
-	float divisor = 128;
+	float divisor = 1024;
 	Position.x = x;
 	Position.y = y;
 
@@ -73,7 +73,7 @@ void Player::movement(GLFWwindow *w, double deltatime) {
 		if (direction.y == 1) {
 			int x1 = floor(x / t);
 			int y1 = floor(y / t);
-			if (tileData[y1 + 1][x1] == 0) {
+			if (tileData[y1 + 1.0f][x1] == 0 || tileData[y1 + 1.0f][x1] == 2) {
 				direction.x = 0.0f;
 				direction.y = 1.0f;
 			}
@@ -85,7 +85,7 @@ void Player::movement(GLFWwindow *w, double deltatime) {
 		if (direction.y == -1) {
 			int x1 = floor(x / t);
 			int y1 = floor(y / t);
-			if (tileData[y1 - 1][x1] == 0) {
+			if (tileData[y1 - 1.0f][x1] == 0 || tileData[y1 - 1.0f][x1] == 2) {
 				direction.x = 0.0f;
 				direction.y = -1.0f;
 			}
@@ -97,7 +97,7 @@ void Player::movement(GLFWwindow *w, double deltatime) {
 		if (direction.x == 1) {
 			int x1 = floor(x / t);
 			int y1 = floor(y / t);
-			if (tileData[y1][x1 + 1] == 0) {
+			if (tileData[y1][x1 + 1.0f] == 0 || tileData[y1][x1 + 1.0f] == 2) {
 				direction.x = 1.0f;
 				direction.y = .0f;
 			}
@@ -109,7 +109,7 @@ void Player::movement(GLFWwindow *w, double deltatime) {
 		if (direction.x == -1) {
 			int x1 = floor(x / t);
 			int y1 = floor(y / t);
-			if (tileData[y1][x1 - 1] == 0) {
+			if (tileData[y1][x1 - 1.0f] == 0 || tileData[y1][x1 - 1.0f] == 2) {
 				direction.x = -1.0f;
 				direction.y = 0.0f;
 			}

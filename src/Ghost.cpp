@@ -18,7 +18,7 @@ void Ghost::movement(GLFWwindow *w, double deltatime){
 	float divisor = 128;
 	Position.x = x;
 	Position.y = y;
-	if (fmod(delta, 100) == 0) {
+	if (fmod(delta, 50) == 0) {
 		int random = rand() % 4;
 		if (random == 0) {
 			direction.x = 0.f;
