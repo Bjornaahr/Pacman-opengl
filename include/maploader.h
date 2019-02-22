@@ -4,6 +4,7 @@
 #include "spriterenderer.h"
 #include <vector>
 #include "textureManager.h"
+#include "Ghost.h"
 
 
 class MapLoader
@@ -15,12 +16,12 @@ public:
 
 	MapLoader() { }
 	//Loads level from file
-	void Load(const GLchar *file, GLuint width, GLuint height, Player *p);
+	void Load(const GLchar *file, GLuint width, GLuint height, Player *p, Ghost *ghost[]);
 
 	void Draw(SpriteRenderer &renderer);
 
 	GLboolean IsCompleted();
 private:
-	void init(std::vector<std::vector<GLuint>> tileData, GLuint lvlwidth, GLuint lvlheight);
+	void init(std::vector<std::vector<GLuint>> tileData, GLuint lvlwidth, GLuint lvlheight, Player *p);
 
 };

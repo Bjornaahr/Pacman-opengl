@@ -25,14 +25,14 @@ Player::Player() {
 // Source for how we decided to do collision / cenetring
 // https://www.dropbox.com/s/pbcokfxxdwsvcr7/Pacman.rar?file_subpath=%2FPacman%2FAIE+Basic+Framework2
 //
-void Player::movement(GLFWwindow *w, bool player, double deltatime) {
+void Player::movement(GLFWwindow *w, double deltatime) {
 	float t = 1.f;
 	float rotate;
 	// Move forward
 	float divisor = 128;
-		Position.x = x;
-		Position.y = y;
-		if (player) {
+	Position.x = x;
+	Position.y = y;
+
 			if (glfwGetKey(w, GLFW_KEY_W) == GLFW_PRESS) {
 				direction.x = 0.f;
 				direction.y = 1.f;
@@ -64,41 +64,7 @@ void Player::movement(GLFWwindow *w, bool player, double deltatime) {
 				speed = 5.f;
 				y = floor(y / t) * t + t / divisor;
 			}
-		}
-		else {
-			int random = rand() % 4;
-			if (random == 0) {
-				direction.x = 0.f;
-				direction.y = 1.f;
-				this->rotate = PI;
-				speed = 5.f;
-				x = floor(x / t) * t + t / divisor;
-			}
-			// Move backward
-			if (random == 1) {
-				direction.x = 0.f;
-				direction.y = -1.f;
-				this->rotate = 0;
-				speed = 5.f;
-				x = floor(x / t) * t + t / divisor;
-			}
-			// Strafe right
-			if (random == 2) {
-				direction.x = 1.f;
-				direction.y = 0.f;
-				this->rotate = PI / 2;
-				speed = 5.f;
-				y = floor(y / t) * t + t / divisor;
-			}
-			// Strafe left
-			if (random == 3) {
-				direction.x = -1.f;
-				direction.y = 0.f;
-				this->rotate = (3 * PI) / 2;
-				speed = 5.f;
-				y = floor(y / t) * t + t / divisor;
-			}
-		}
+		
 
 		// Should work as collision detection
 		// needs some more changes to make it work
@@ -162,6 +128,7 @@ void Player::addTileToPlayer(std::vector<std::vector<GLuint>> tile)
 {
 	tileData = tile;
 	std::cout << tileData[y][x] << std::endl;
+
 }
 
 glm::vec2 Player::translate(double deltaTime) {
@@ -185,7 +152,7 @@ glm::vec2 Player::animation(double deltaTime) {
 		forward = true;
 	}
 	//check if delta modolu speed is 0
-	if (fmod(delta, 2) == 0) {
+	if (fmod(delta, 1) == 0) {
 		//Resets delta
 		delta = 0;
 		//Check if to play animation forward or backwards
@@ -199,6 +166,12 @@ glm::vec2 Player::animation(double deltaTime) {
 		return animationFrames[currentFrame];
 	}
 
+}
+
+
+void Player::getspawn(float xSpawn, float ySpawn) {
+	this->x = xSpawn;
+	this->y = ySpawn;
 }
 
 

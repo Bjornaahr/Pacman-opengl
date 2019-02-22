@@ -8,7 +8,7 @@
 
 
 
-void MapLoader::Load(const GLchar *file, GLuint width, GLuint height, Player *p) {
+void MapLoader::Load(const GLchar *file, GLuint width, GLuint height, Player *p, Ghost *ghost[]) {
 
 	this->Bricks.clear();
 	this->Pellets.clear();
@@ -29,12 +29,16 @@ void MapLoader::Load(const GLchar *file, GLuint width, GLuint height, Player *p)
 		}
 		if (tileData.size() > 0)
 			p->addTileToPlayer(tileData);
+		for (int i = 0; i < 4; i++) {
+			ghost[i]->addTileToGhost(tileData);
+		}
+
 			Pelletamount = 0;
-			this->init(tileData, width, height);
+			this->init(tileData, width, height, p);
 	}
 }
 
-void MapLoader::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlwidth, GLuint lvlheight) {
+void MapLoader::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlwidth, GLuint lvlheight, Player *p) {
 	GLuint height = tileData.size();
 	GLuint width = tileData[0].size();
 	GLfloat unit_width = lvlwidth / static_cast<GLfloat>(width);
@@ -44,19 +48,24 @@ void MapLoader::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlwidth,
 
 	for (GLfloat y = 0; y < height; y++) {
 		for (GLfloat x = 0; x < width; x++) {
+
 			if (tileData[y][x] == 1) {
 				glm::vec2 pos(x, y);
 				glm::vec2 size(0.6f, 0.6f);
-				GameObject wall(pos, size, TextureManager::GetTexture("wall"), glm::vec3(0.f, 0.f, 0.f));
+				GameObject wall(pos, size, TextureManager::GetTexture("wall"));
 				this->Bricks.push_back(wall);
 			}
 
 			if (tileData[y][x] == 0) {
 				glm::vec2 pos(x, y);
 				glm::vec2 size(0.1f, 0.1f);
-				GameObject pellet(pos, size, TextureManager::GetTexture("pellet"), glm::vec3(0.f, 0.f, 0.f));
+				GameObject pellet(pos, size, TextureManager::GetTexture("pellet"));
 				this->Pellets.push_back(pellet);
 				++Pelletamount;
+			}
+
+			if (tileData[y][x] == 2) {
+				p->getspawn(x, y);
 			}
 
 		}

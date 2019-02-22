@@ -27,8 +27,8 @@ public:
 	/// As player and ghost is using the same class. make seperate constructors for both
 	Player();
 	~Player();
-	void movement(GLFWwindow *w, bool player, double deltatime);
-
+	void movement(GLFWwindow *w, double deltatime);
+	void getspawn(float xSpawn, float ySpawn);
 	float rotation();
 	void addTileToPlayer(std::vector<std::vector<GLuint>> tile);
 	glm::vec2 translate(double deltaTime);

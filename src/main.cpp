@@ -19,6 +19,7 @@
 #include "textureManager.h"
 #include "spriterenderer.h"
 #include "player.h"
+#include "Ghost.h"
 #include "gameobject.h"
 #include "maploader.h"
 
@@ -28,7 +29,7 @@
 
 SpriteRenderer  *Renderer;
 Player *player;
-Player *ghost[4];
+Ghost *ghosts[4];
 
 std::vector<MapLoader> Levels;
 GLuint Level;
@@ -36,10 +37,11 @@ GLuint Level;
 int WIDTH = 1024, HEIGHT = 768;
 int Score;
 int PelletsDestoyed;
+int Lives = 3;
 
 GLboolean CheckCollision(GameObject &one, GameObject &two);
 GLboolean Collision(GLFWwindow *w, bool coll, double deltatime);
-void CollisionPellet();
+void Collisions();
 
 
 struct Vertex {
@@ -53,7 +55,9 @@ void static_code() {
 	//Creates a spriterenderer
 	Renderer = new SpriteRenderer();
 	player = new Player();
-	for (int i = 0; i < 4; i++) ghost[i] = new Player();
+
+
+	for (int i = 0; i < 4; i++) ghosts[i] = new Ghost();
 	
 
 	//Loads texture (Path, name for future refrence)
@@ -65,7 +69,7 @@ void static_code() {
 
 	MapLoader one;
 	//Loads map WIDTH and HEIGHT dosn't do anything
-	one.Load("resources/levels/level0", WIDTH, HEIGHT, player);
+	one.Load("resources/levels/level0", WIDTH, HEIGHT, player, ghosts);
 	//Add level to level vector
 	Levels.push_back(one);
 	//Sets level to 0 getting ready to load the correct level
@@ -82,16 +86,24 @@ void dynamic_code(GLFWwindow *w, double deltaTime)
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	//Moves the player also checks for colision against wall
-	player->movement(w, true, deltaTime);
+	player->movement(w, deltaTime);
+
+	for (int i = 0; i < 4; i++) ghosts[i]->movement(w, deltaTime);
+
 
 	//Draws level
 	Levels[Level].Draw(*Renderer);
 
 	//Draws packman, (Texture, position, size, rotation, color, shift in UV(for animations))
 	Renderer->DrawSprite(TextureManager::GetTexture("pacman"),
-		player->translate(deltaTime), glm::vec2(.5f, .5f), player->rotation(), glm::vec3(0.0f, 0.0f, 0.0f), player->animation(deltaTime));
+		player->translate(deltaTime), glm::vec2(.5f, .5f), player->rotation(), glm::vec3(1.0f, 1.0f, 1.0f), player->animation(deltaTime));
+	for (int i = 0; i < 4; i++) {
+		Renderer->DrawSprite(TextureManager::GetTexture("pacman"),
+			ghosts[i]->translate(deltaTime), glm::vec2(.5f, .5f), 0, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.8333335, 0));
+	}
+
 	//Checks for collision against pellets
-	CollisionPellet();
+	Collisions();
 	//Check if amount of pellets destoyed is enough to complete level
 	if (Levels[Level].Pelletamount == PelletsDestoyed) {
 		//Set level to completed
@@ -113,7 +125,7 @@ GLboolean CheckCollision(GameObject &one, GameObject &two) {
 }
 
 //Checks for collision against pellets
-void CollisionPellet() {
+void Collisions() {
 	//Loops through all pellets in current level
 	for (GameObject &pellet : Levels[Level].Pellets) {
 		//Check for collision
@@ -123,6 +135,13 @@ void CollisionPellet() {
 			//Increase score and pellets destoyed
 			Score++;
 			PelletsDestoyed++;
+		}
+	}
+
+	for (int i = 0; i < 4; i++) {
+		if (CheckCollision(*ghosts[i], *player)) {
+			GFX_INFO("Lost a life, Current lifes: %i", Lives);
+			Lives--;
 		}
 	}
 }

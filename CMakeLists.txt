@@ -48,6 +48,8 @@ target_sources(${PROJECT}
      PRIVATE ${SRCDIR}/texture.cpp
      PRIVATE ${SRCDIR}/texturemanager.cpp
 	 PRIVATE ${SRCDIR}/spriterenderer.cpp
+	 PRIVATE ${SRCDIR}/Ghost.cpp
+
 
 )
 
