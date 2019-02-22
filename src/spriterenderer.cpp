@@ -21,10 +21,10 @@ SpriteRenderer::SpriteRenderer()
 void SpriteRenderer::initRenderData()
 {
 
-	verts[0] = { Vertex{ /*pos*/{ -1.0f, 1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.00f, 0.00f } } };
-	verts[1] = { Vertex{ /*pos*/{ 1.0f, 1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.166666667f, 0.00f } } };
-	verts[2] = { Vertex{ /*pos*/{ 1.0f, -1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.166666667f, 0.25f } } };
-	verts[3] = { Vertex{ /*pos*/{ -1.0f, -1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.00f, 0.25f } } };
+	verts[0] = { Vertex{ /*pos*/{ -1.0f, 1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.01f, 0.00f } } };
+	verts[1] = { Vertex{ /*pos*/{ 1.0f, 1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.16f, 0.00f } } };
+	verts[2] = { Vertex{ /*pos*/{ 1.0f, -1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.16f, 0.25f } } };
+	verts[3] = { Vertex{ /*pos*/{ -1.0f, -1.0f }, /*col*/{ 1, 1, 1 }, /*uv*/{ 0.01f, 0.25f } } };
 
 	glBindVertexArray(this->VAO);
 

@@ -13,9 +13,9 @@ Player::Player() {
 
 	//Numbers representing UV coordinates for spritesheet animation
 	animationFrames[0] = glm::vec2(0, 0);
-	animationFrames[1] = glm::vec2(0.16666666666f, 0);
-	animationFrames[2] = glm::vec2(0.33333333332f, 0);
-	animationFrames[3] = glm::vec2(0.49999999998, 0);
+	animationFrames[1] = glm::vec2(0.16f, 0);
+	animationFrames[2] = glm::vec2(0.32f, 0);
+	animationFrames[3] = glm::vec2(0.48f, 0);
 	currentFrame = 0;
 
 
@@ -127,8 +127,6 @@ float Player::rotation() {
 void Player::addTileToPlayer(std::vector<std::vector<GLuint>> tile)
 {
 	tileData = tile;
-	std::cout << tileData[y][x] << std::endl;
-
 }
 
 glm::vec2 Player::translate(double deltaTime) {
@@ -142,7 +140,6 @@ glm::vec2 Player::translate(double deltaTime) {
 glm::vec2 Player::animation(double deltaTime) {
 	//Counts up on delta
 	delta++;
-
 	//Check if on last frame
 	if (currentFrame == 3) {
 		forward = false;
@@ -152,7 +149,7 @@ glm::vec2 Player::animation(double deltaTime) {
 		forward = true;
 	}
 	//check if delta modolu speed is 0
-	if (fmod(delta, 1) == 0) {
+	if (fmod(delta, 2) == 0) {
 		//Resets delta
 		delta = 0;
 		//Check if to play animation forward or backwards

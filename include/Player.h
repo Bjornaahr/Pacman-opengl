@@ -19,7 +19,7 @@ private:
 	//Current frame to display
 	int currentFrame;
 	//Number to check when we can change animation frame
-	double delta;
+	int delta;
 	//Bool to check if we play animation backwards or forwards
 	bool forward;
 
