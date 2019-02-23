@@ -167,8 +167,16 @@ glm::vec2 Player::animation(double deltaTime) {
 
 
 void Player::getspawn(float xSpawn, float ySpawn) {
+	this->spawnX = xSpawn;
+	this->spawnY = ySpawn;
+
 	this->x = xSpawn;
 	this->y = ySpawn;
+}
+
+void Player::Reset() {
+	x = spawnX;
+	y = spawnY;
 }
 
 

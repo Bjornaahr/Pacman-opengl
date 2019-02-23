@@ -13,6 +13,7 @@ private:
 	float x, y;
 	float rotate;
 	float speed;
+	float spawnX, spawnY;
 	std::vector<std::vector<GLuint>> tileData;
 	//Frames in animation UV
 	glm::vec2 animationFrames[4];
@@ -33,5 +34,6 @@ public:
 	void addTileToPlayer(std::vector<std::vector<GLuint>> tile);
 	glm::vec2 translate(double deltaTime);
 	glm::vec2 animation(double deltaTime);
+	void Reset();
 
 };

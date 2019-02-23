@@ -182,7 +182,17 @@ void dynamic_code(GLFWwindow *w, double deltaTime, bool *exit)
 			Renderer->DrawSprite(TextureManager::GetTexture("pacman"),
 				ghosts[i]->translate(deltaTime), glm::vec2(.5f, .5f), 0, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.8333335, 0));
 		}
-		if (dead) menu = true;
+		if (dead) {
+			menu = true;
+			///Restart function?
+			Lives = 3;
+			Score = 0;
+			PelletsDestoyed = 0;
+			player->Reset();
+			Levels[Level].Reset();
+			dead = false;
+			GFX_INFO("Score: %i\n PelletsDestoryed: %i", Score, PelletsDestoyed);
+		}
 	}
 	
 	

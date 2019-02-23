@@ -85,6 +85,12 @@ void MapLoader::Draw(SpriteRenderer &renderer) {
 	}
 }
 
+void MapLoader::Reset() {
+	for (GameObject &pellet : this->Pellets) {
+		pellet.isDestoroyed = false;
+	}
+}
+
 GLboolean MapLoader::IsCompleted()
 {
 	GFX_INFO("Level completed!");

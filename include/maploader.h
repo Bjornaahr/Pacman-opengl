@@ -21,6 +21,8 @@ public:
 	void Draw(SpriteRenderer &renderer);
 
 	GLboolean IsCompleted();
+
+	void Reset();
 private:
 	void init(std::vector<std::vector<GLuint>> tileData, GLuint lvlwidth, GLuint lvlheight, Player *p);
 
