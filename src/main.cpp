@@ -102,6 +102,8 @@ void dynamic_code(GLFWwindow *w, double deltaTime, bool *exit)
 	// enters main menu if you die showing score
 	static bool dead = false;
 
+	static bool comp = false;
+
 	// Score for game
 	static int score = 0;
 	if (glfwGetKey(w, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -154,7 +156,7 @@ void dynamic_code(GLFWwindow *w, double deltaTime, bool *exit)
 			
 			if (ImGui::Button("Exit"))		*exit = true;
 			
-			ImGui::Text("Score %d", score);
+			ImGui::Text("Score %d", Score);
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::End();
 		}
@@ -164,8 +166,11 @@ void dynamic_code(GLFWwindow *w, double deltaTime, bool *exit)
 		player->movement(w, deltaTime);
 		for (int i = 0; i < 4; i++) ghosts[i]->movement(w, deltaTime);
 		ImGui::Begin("Score");
-		ImGui::Text("Score %d", score);
+		ImGui::Text("Score %d", Score);
 		ImGui::End();
+
+		//Checks for collision against pellets and ghosts
+		Collisions();
 
 		//Draws level
 		Levels[Level].Draw(*Renderer);
@@ -185,12 +190,15 @@ void dynamic_code(GLFWwindow *w, double deltaTime, bool *exit)
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	//Checks for collision against pellets
-	Collisions();
+
 	//Check if amount of pellets destoyed is enough to complete level
 	if (Levels[Level].Pelletamount == PelletsDestoyed) {
 		//Set level to completed
-		bool comp = Levels[Level].IsCompleted();
+		 comp = Levels[Level].IsCompleted();
+	}
+
+	if (Lives <= 0) {
+		dead = true;
 	}
 
 }
