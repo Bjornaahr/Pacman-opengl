@@ -42,7 +42,6 @@ int Score;
 int PelletsDestoyed;
 int Lives = 3;
 
-bool show_demo_window = true;
 bool show_another_window = false;
 ImVec4 clear_color = ImVec4(0.4f, 0.55f, 0.60f, 1.00f);
 
@@ -88,31 +87,104 @@ void static_code() {
 }
 
 
-void dynamic_code(GLFWwindow *w, double deltaTime)
+void dynamic_code(GLFWwindow *w, double deltaTime, bool *exit)
 {
 	// Use a Vertex Array Object
 	glClearColor(0.15f, 0.15f, 0.15f, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
 
-	//Moves the player also checks for colision against wall
-	player->movement(w, deltaTime);
+	static bool menu = true;
+	static bool wasPressed = false;
 
+	// enters main menu if you die showing score
+	static bool dead = false;
 
-
-	for (int i = 0; i < 4; i++) ghosts[i]->movement(w, deltaTime);
-
-
-	//Draws level
-	Levels[Level].Draw(*Renderer);
-
-	//Draws packman, (Texture, position, size, rotation, color, shift in UV(for animations))
-	Renderer->DrawSprite(TextureManager::GetTexture("pacman"),
-		player->translate(deltaTime), glm::vec2(.5f, .5f), player->rotation(), glm::vec3(1.0f, 1.0f, 1.0f), player->animation(deltaTime));
-	for (int i = 0; i < 4; i++) {
-		Renderer->DrawSprite(TextureManager::GetTexture("pacman"),
-			ghosts[i]->translate(deltaTime), glm::vec2(.5f, .5f), 0, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.8333335, 0));
+	// Score for game
+	static int score = 0;
+	if (glfwGetKey(w, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+		wasPressed = true;
 	}
+	if (glfwGetKey(w, GLFW_KEY_ESCAPE) == GLFW_RELEASE) {
+		if (wasPressed) {
+			menu = !menu;
+		}
+		wasPressed = false;
+	}
+	static bool start = true;
+	if (menu) {
+		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+		{
 
+			/// May create an error
+			/*
+			if (dead) {
+				static_code();
+				dead = false;
+			}
+			*/
+			
+			ImGui::Begin("Menu");
+
+			if(start) {
+				if (ImGui::Button("Start")) {
+					static_code();
+					dead = false;
+					menu = false;
+					start = false;
+				}
+			}
+			else {
+				if (ImGui::Button("Resume"))	menu = false;
+
+				/// Possibility to restart game makes an error
+				/*
+				if (ImGui::Button("Restart")) {
+					static_code();
+					dead = false;	// Should be somewhere else maube
+					menu = false;
+					start = false;
+				}
+				*/
+			}
+
+			
+			
+			if (ImGui::Button("Exit"))		*exit = true;
+			
+			ImGui::Text("Score %d", score);
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			ImGui::End();
+		}
+	}
+	else {
+		//Moves the player also checks for colision against wall
+		player->movement(w, deltaTime);
+		for (int i = 0; i < 4; i++) ghosts[i]->movement(w, deltaTime);
+		ImGui::Begin("Score");
+		ImGui::Text("Score %d", score);
+		ImGui::End();
+
+		//Draws level
+		Levels[Level].Draw(*Renderer);
+
+		//Draws packman, (Texture, position, size, rotation, color, shift in UV(for animations))
+		Renderer->DrawSprite(TextureManager::GetTexture("pacman"),
+			player->translate(deltaTime), glm::vec2(.5f, .5f), player->rotation(), glm::vec3(1.0f, 1.0f, 1.0f), player->animation(deltaTime));
+		for (int i = 0; i < 4; i++) {
+			Renderer->DrawSprite(TextureManager::GetTexture("pacman"),
+				ghosts[i]->translate(deltaTime), glm::vec2(.5f, .5f), 0, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.8333335, 0));
+		}
+		if (dead) menu = true;
+	}
+	
+	
+	
+
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	//Checks for collision against pellets
 	Collisions();
 	//Check if amount of pellets destoyed is enough to complete level
@@ -204,6 +276,7 @@ int main(void)
 	int nbFrames = 0;
 	double deltaTime = 0;
 	double oldTime = 0;
+	bool exit = false;
 	/// Needs better animation/movement based on time so it is smooth at all times
 	do {
 		// Measure speed
@@ -223,13 +296,13 @@ int main(void)
 		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		deltaTime = currentTime - oldTime;
-		dynamic_code(window, deltaTime);
+		dynamic_code(window, deltaTime, &exit);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 		oldTime = currentTime;
 	} 
-	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
+	while (!exit &&
 		glfwWindowShouldClose(window) == 0);
 	glfwDestroyWindow(window);
 	ImGui_ImplGlfw_Shutdown();
