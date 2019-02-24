@@ -171,6 +171,7 @@ void dynamic_code(GLFWwindow *w, double deltaTime, bool *exit)
 		for (int i = 0; i < 4; i++) ghosts[i]->movement(w, Level);
 		ImGui::Begin("Score");
 		ImGui::Text("Score %d", Score);
+		ImGui::Text("Lives %d", Lives);
 		ImGui::End();
 
 		//Checks for collision against pellets and ghosts
@@ -288,8 +289,7 @@ int main(void)
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui::StyleColorsDark();
 	ImGui_ImplOpenGL3_Init(glsl_version);
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-
+	io.ConfigFlags = ImGuiConfigFlags_NavEnableKeyboard;
 	static_code();
 	glClearColor(1,1,1,1);
 	double lastTime = glfwGetTime();
