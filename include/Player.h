@@ -14,7 +14,9 @@ private:
 	float rotate;
 	float speed;
 	float spawnX, spawnY;
-	std::vector<std::vector<GLuint>> tileData;
+	int currentLevel;
+	//tileData[Level[y]][x]
+	std::vector<std::vector<std::vector<GLuint>>> tileData;
 	//Frames in animation UV
 	glm::vec2 animationFrames[4];
 	//Current frame to display
@@ -28,7 +30,7 @@ public:
 	/// As player and ghost is using the same class. make seperate constructors for both
 	Player();
 	~Player();
-	void movement(GLFWwindow *w, double deltatime);
+	void movement(GLFWwindow *w, int level);
 	void getspawn(float xSpawn, float ySpawn);
 	float rotation();
 	void addTileToPlayer(std::vector<std::vector<GLuint>> tile);

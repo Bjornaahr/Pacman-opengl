@@ -163,8 +163,8 @@ void dynamic_code(GLFWwindow *w, double deltaTime, bool *exit)
 	}
 	else {
 		//Moves the player also checks for colision against wall
-		player->movement(w, deltaTime);
-		for (int i = 0; i < 4; i++) ghosts[i]->movement(w, deltaTime);
+		player->movement(w, Level);
+		for (int i = 0; i < 4; i++) ghosts[i]->movement(w, Level);
 		ImGui::Begin("Score");
 		ImGui::Text("Score %d", Score);
 		ImGui::End();

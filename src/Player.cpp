@@ -25,45 +25,46 @@ Player::Player() {
 // Source for how we decided to do collision / cenetring
 // https://www.dropbox.com/s/pbcokfxxdwsvcr7/Pacman.rar?file_subpath=%2FPacman%2FAIE+Basic+Framework2
 //
-void Player::movement(GLFWwindow *w, double deltatime) {
+void Player::movement(GLFWwindow *w, int level) {
 	float t = 1.0f;
 	float rotate;
 	//Have to use a bigg number here for some weird reson
 	float divisor = 1024;
 	Position.x = x;
 	Position.y = y;
+	currentLevel = level;
 
 			// Move forward
-			if (glfwGetKey(w, GLFW_KEY_W) == GLFW_PRESS && tileData[y + 1.0f][x] == 0) {
+			if (glfwGetKey(w, GLFW_KEY_W) == GLFW_PRESS && tileData[currentLevel][y + 1.0f][x] == 0) {
 				direction.x = 0.f;
 				direction.y = 1.f;
 				this->rotate = PI;
 				speed = 5.f;
-				x = floor(x / t) * t + t / divisor * deltatime;
+				x = floor(x / t) * t + t / divisor;
 			}
 			// Move backward
-			else if (glfwGetKey(w, GLFW_KEY_S) == GLFW_PRESS && tileData[y - 1.0f][x] == 0) {
+			else if (glfwGetKey(w, GLFW_KEY_S) == GLFW_PRESS && tileData[currentLevel][y - 1.0f][x] == 0) {
 				direction.x = 0.f;
 				direction.y = -1.f;
 				this->rotate = 0;
 				speed = 5.f;
-				x = floor(x / t) * t + t / divisor * deltatime;
+				x = floor(x / t) * t + t / divisor;
 			}
 			// Strafe right
-			else if (glfwGetKey(w, GLFW_KEY_D) == GLFW_PRESS && tileData[y][x + 1.0f] == 0) {
+			else if (glfwGetKey(w, GLFW_KEY_D) == GLFW_PRESS && tileData[currentLevel][y][x + 1.0f] == 0) {
 				direction.x = 1.f;
 				direction.y = 0.f;
 				this->rotate = PI / 2;
 				speed = 5.f;
-				y = floor(y / t) * t + t / divisor * deltatime;
+				y = floor(y / t) * t + t / divisor;
 			}
 			// Strafe left
-			else if (glfwGetKey(w, GLFW_KEY_A) == GLFW_PRESS && tileData[y][x - 1.0f] == 0) {
+			else if (glfwGetKey(w, GLFW_KEY_A) == GLFW_PRESS && tileData[currentLevel][y][x - 1.0f] == 0) {
 				direction.x = -1.f;
 				direction.y = 0.f;
 				this->rotate = (3 * PI) / 2;
 				speed = 5.f;
-				y = floor(y / t) * t + t / divisor * deltatime;
+				y = floor(y / t) * t + t / divisor;
 			}
 		
 		//If player is going up
@@ -71,14 +72,14 @@ void Player::movement(GLFWwindow *w, double deltatime) {
 			int x1 = floor(x / t);
 			int y1 = floor(y / t);
 			//Check if tile in front is walkable
-			if (tileData[y1 + 1.0f][x1] == 0 || tileData[y1 + 1.0f][x1] == 2) {
+			if (tileData[currentLevel][y1 + 1.0f][x1] == 0 || tileData[currentLevel][y1 + 1.0f][x1] == 2) {
 				direction.x = 0.0f;
 				direction.y = 1.0f;
 			}
 			//If not walkable stop player and center on tile
 			else {
 				direction.y = 0.0f;
-				y = floor(y / t) * t + t / divisor * deltatime;
+				y = floor(y / t) * t + t / divisor;
 			}
 		}
 
@@ -87,14 +88,14 @@ void Player::movement(GLFWwindow *w, double deltatime) {
 			int x1 = floor(x / t);
 			int y1 = floor(y / t);
 			//Check if tile in front is walkable
-			if (tileData[y1 - 1.0f][x1] == 0 || tileData[y1 - 1.0f][x1] == 2) {
+			if (tileData[currentLevel][y1 - 1.0f][x1] == 0 || tileData[currentLevel][y1 - 1.0f][x1] == 2) {
 				direction.x = 0.0f;
 				direction.y = -1.0f;
 			}
 			//If not walkable stop player and center on tile
 			else {
 				direction.y = 0.0f;
-				y = floor(y / t) * t + t / divisor * deltatime;
+				y = floor(y / t) * t + t / divisor;
 			}
 		}
 
@@ -103,14 +104,14 @@ void Player::movement(GLFWwindow *w, double deltatime) {
 			int x1 = floor(x / t);
 			int y1 = floor(y / t);
 			//Check if tile in front is walkable
-			if (tileData[y1][x1 + 1.0f] == 0 || tileData[y1][x1 + 1.0f] == 2) {
+			if (tileData[currentLevel][y1][x1 + 1.0f] == 0 || tileData[currentLevel][y1][x1 + 1.0f] == 2) {
 				direction.x = 1.0f;
 				direction.y = .0f;
 			}
 			//If not walkable stop player and center on tile
 			else {
 				direction.x = 0.0f;
-				x = floor(x / t) * t + t / divisor * deltatime;
+				x = floor(x / t) * t + t / divisor;
 			}
 		}
 
@@ -119,14 +120,14 @@ void Player::movement(GLFWwindow *w, double deltatime) {
 			int x1 = floor(x / t);
 			int y1 = floor(y / t);
 			//Check if tile in front is walkable
-			if (tileData[y1][x1 - 1.0f] == 0 || tileData[y1][x1 - 1.0f] == 2) {
+			if (tileData[currentLevel][y1][x1 - 1.0f] == 0 || tileData[currentLevel][y1][x1 - 1.0f] == 2) {
 				direction.x = -1.0f;
 				direction.y = 0.0f;
 			}
 			else {
 				//If not walkable stop player and center on tile
 				direction.x = 0.0f;
-				x = floor(x / t) * t + t / divisor * deltatime;
+				x = floor(x / t) * t + t / divisor;
 			}
 		}
 }
@@ -139,7 +140,8 @@ float Player::rotation() {
 //Adds tileData to player
 void Player::addTileToPlayer(std::vector<std::vector<GLuint>> tile)
 {
-	tileData = tile;
+	tileData.push_back(tile);
+	currentLevel = 0;
 }
 
 glm::vec2 Player::translate(double deltaTime) {
