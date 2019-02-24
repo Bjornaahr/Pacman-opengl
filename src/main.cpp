@@ -85,7 +85,7 @@ void static_code() {
 	Levels.push_back(one);
 	Levels.push_back(two);
 	//Sets level to 0 getting ready to load the correct level
-	Level = 1;
+	Level = 0;
 }
 
 
