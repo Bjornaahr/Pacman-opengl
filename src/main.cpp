@@ -75,10 +75,9 @@ void static_code() {
 
 
 
-	MapLoader one;
+	MapLoader one, two;
 	//Loads map WIDTH and HEIGHT dosn't do anything
 	one.Load("resources/levels/level0", WIDTH, HEIGHT, player, ghosts);
-	MapLoader two;
 	two.Load("resources/levels/level1", WIDTH, HEIGHT, player, ghosts);
 
 	//Add level to level vector
@@ -103,7 +102,6 @@ void dynamic_code(GLFWwindow *w, double deltaTime, bool *exit)
 
 	// enters main menu if you die showing score
 	static bool dead = false;
-
 	static bool comp = false;
 
 	// Score for game
@@ -133,6 +131,17 @@ void dynamic_code(GLFWwindow *w, double deltaTime, bool *exit)
 				}
 
 			}
+
+			else if (comp) {
+				ImGui::Text("Congrats you beat Level: %i", Level +1);
+				if (ImGui::Button("Start")) {
+					menu = false;
+					dead = false;
+					Score = 0;
+					comp = false;
+				}
+			}
+
 			else if (start) {
 				if (ImGui::Button("Start")) {
 					dead = false;
@@ -151,12 +160,32 @@ void dynamic_code(GLFWwindow *w, double deltaTime, bool *exit)
 					Levels[Level].Reset();
 					dead = false;
 					menu = false;
-					GFX_INFO("Score: %i\n PelletsDestoryed: %i", Score, PelletsDestoyed);
 				}
 
 			}
 
+			if (ImGui::Button("Level: 1")) {
+				Lives = 3;
+				Score = 0;
+				PelletsDestoyed = 0;
+				player->Reset();
+				Levels[Level].Reset();
+				dead = false;
+				menu = false;
+				Level = 0;
+			}
 
+
+			if (ImGui::Button("Level: 2")) {
+				Lives = 3;
+				Score = 0;
+				PelletsDestoyed = 0;
+				player->Reset();
+				Levels[Level].Reset();
+				dead = false;
+				menu = false;
+				Level = 1;
+			}
 
 			if (ImGui::Button("Exit"))		*exit = true;
 
@@ -203,17 +232,17 @@ void dynamic_code(GLFWwindow *w, double deltaTime, bool *exit)
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
 	//Check if amount of pellets destoyed is enough to complete level
 	if (Levels[Level].Pelletamount == PelletsDestoyed) {
 		//Set level to completed
-		comp = Levels[Level].IsCompleted();
+		comp = true;
+		menu = true;
 	}
+	
 
 	if (Lives <= 0) {
 		dead = true;
 	}
-
 }
 
 //Check for collision between two GameObjects
@@ -230,6 +259,9 @@ GLboolean CheckCollision(GameObject &one, GameObject &two) {
 
 //Checks for collision against pellets
 void Collisions() {
+	static bool iFrame = false;
+	static int frames;
+
 	//Loops through all pellets in current level
 	for (GameObject &pellet : Levels[Level].Pellets) {
 		//Check for collision
@@ -237,17 +269,22 @@ void Collisions() {
 			//Destorys pellet
 			pellet.isDestoroyed = true;
 			//Increase score and pellets destoyed
-			Score++;
+			Score += 100;
 			PelletsDestoyed++;
 		}
 	}
 
 	for (int i = 0; i < 4; i++) {
-		if (CheckCollision(*ghosts[i], *player)) {
+		if (CheckCollision(*ghosts[i], *player) && !iFrame) {
+			iFrame = true;
 			GFX_INFO("Lost a life, Current lifes: %i", Lives);
 			Lives--;
 		}
 	}
+	if (frames % 20 == 0 && iFrame) {
+		iFrame = false;
+	}
+	frames++;
 }
 
 
