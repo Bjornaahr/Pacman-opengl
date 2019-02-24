@@ -10,12 +10,13 @@ Texture TextureManager::LoadTexture(const GLchar *file, std::string name)
 	Textures[name] = loadTextureFromFile(file);
 	return Textures[name];
 }
-
+//Returns the requested texture
 Texture TextureManager::GetTexture(std::string name)
 {
 	return Textures[name];
 }
 
+//Deletes all textures
 void TextureManager::Clear()
 {
 	// Deletes all textures

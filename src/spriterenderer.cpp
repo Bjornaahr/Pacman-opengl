@@ -105,10 +105,10 @@ void SpriteRenderer::DrawSprite(Texture &texture, glm::vec2 position,
 	projectionID = activeShaderProgram.getUniformLocation("projection");
 	//Change in UV coordinates
 	TexCoordShiftLoc = activeShaderProgram.getUniformLocation("texcoordshift");
-
+	//Viewport matrices
 	glm::mat4 view = glm::lookAt(glm::vec3(13.5f, 18, 13), glm::vec3(13.5f, 18, 0), glm::vec3(0, 1, 0));
 	glm::mat4 proj = glm::perspective(PI / 1.78f, (GLfloat)1024 / (GLfloat)760, 0.1f, -10.0f);
-
+	//Sets the matrices for the viewport in shader
 	glUniformMatrix4fv(viewID, 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(projectionID, 1, GL_FALSE, glm::value_ptr(proj));
 
@@ -118,7 +118,7 @@ void SpriteRenderer::DrawSprite(Texture &texture, glm::vec2 position,
 	glm::mat4 scale = glm::scale(modelMatrix, glm::vec3(size, 0.f));
 
 	glm::mat4 model = translate * rotateM * scale;
-
+	//Sends model matrice to shader for transformation
 	glUniformMatrix4fv(modelID, 1, GL_FALSE, glm::value_ptr(model));
 	//Changes UV coordinates
 	glUniform2fv(TexCoordShiftLoc, 1, glm::value_ptr(uvShift));

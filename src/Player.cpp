@@ -28,102 +28,115 @@ Player::Player() {
 void Player::movement(GLFWwindow *w, double deltatime) {
 	float t = 1.0f;
 	float rotate;
-	// Move forward
+	//Have to use a bigg number here for some weird reson
 	float divisor = 1024;
 	Position.x = x;
 	Position.y = y;
 
-			if (glfwGetKey(w, GLFW_KEY_W) == GLFW_PRESS) {
+			// Move forward
+			if (glfwGetKey(w, GLFW_KEY_W) == GLFW_PRESS && tileData[y + 1.0f][x] == 0) {
 				direction.x = 0.f;
 				direction.y = 1.f;
 				this->rotate = PI;
 				speed = 5.f;
-				x = floor(x / t) * t + t / divisor;
+				x = floor(x / t) * t + t / divisor * deltatime;
 			}
 			// Move backward
-			if (glfwGetKey(w, GLFW_KEY_S) == GLFW_PRESS) {
+			else if (glfwGetKey(w, GLFW_KEY_S) == GLFW_PRESS && tileData[y - 1.0f][x] == 0) {
 				direction.x = 0.f;
 				direction.y = -1.f;
 				this->rotate = 0;
 				speed = 5.f;
-				x = floor(x / t) * t + t / divisor;
+				x = floor(x / t) * t + t / divisor * deltatime;
 			}
 			// Strafe right
-			if (glfwGetKey(w, GLFW_KEY_D) == GLFW_PRESS) {
+			else if (glfwGetKey(w, GLFW_KEY_D) == GLFW_PRESS && tileData[y][x + 1.0f] == 0) {
 				direction.x = 1.f;
 				direction.y = 0.f;
 				this->rotate = PI / 2;
 				speed = 5.f;
-				y = floor(y / t) * t + t / divisor;
+				y = floor(y / t) * t + t / divisor * deltatime;
 			}
 			// Strafe left
-			if (glfwGetKey(w, GLFW_KEY_A) == GLFW_PRESS) {
+			else if (glfwGetKey(w, GLFW_KEY_A) == GLFW_PRESS && tileData[y][x - 1.0f] == 0) {
 				direction.x = -1.f;
 				direction.y = 0.f;
 				this->rotate = (3 * PI) / 2;
 				speed = 5.f;
-				y = floor(y / t) * t + t / divisor;
+				y = floor(y / t) * t + t / divisor * deltatime;
 			}
 		
-
-		// Should work as collision detection
-		// needs some more changes to make it work
-		// namely have tiledata be correct
-		
+		//If player is going up
 		if (direction.y == 1) {
 			int x1 = floor(x / t);
 			int y1 = floor(y / t);
+			//Check if tile in front is walkable
 			if (tileData[y1 + 1.0f][x1] == 0 || tileData[y1 + 1.0f][x1] == 2) {
 				direction.x = 0.0f;
 				direction.y = 1.0f;
 			}
+			//If not walkable stop player and center on tile
 			else {
 				direction.y = 0.0f;
-				y = floor(y / t) * t + t / divisor;
+				y = floor(y / t) * t + t / divisor * deltatime;
 			}
 		}
+
+		//If player is going down
 		if (direction.y == -1) {
 			int x1 = floor(x / t);
 			int y1 = floor(y / t);
+			//Check if tile in front is walkable
 			if (tileData[y1 - 1.0f][x1] == 0 || tileData[y1 - 1.0f][x1] == 2) {
 				direction.x = 0.0f;
 				direction.y = -1.0f;
 			}
+			//If not walkable stop player and center on tile
 			else {
 				direction.y = 0.0f;
-				y = floor(y / t) * t + t / divisor;
+				y = floor(y / t) * t + t / divisor * deltatime;
 			}
 		}
+
+		//If player is going right
 		if (direction.x == 1) {
 			int x1 = floor(x / t);
 			int y1 = floor(y / t);
+			//Check if tile in front is walkable
 			if (tileData[y1][x1 + 1.0f] == 0 || tileData[y1][x1 + 1.0f] == 2) {
 				direction.x = 1.0f;
 				direction.y = .0f;
 			}
+			//If not walkable stop player and center on tile
 			else {
 				direction.x = 0.0f;
-				x = floor(x / t) * t + t / divisor;
+				x = floor(x / t) * t + t / divisor * deltatime;
 			}
 		}
+
+		//If player is going left
 		if (direction.x == -1) {
 			int x1 = floor(x / t);
 			int y1 = floor(y / t);
+			//Check if tile in front is walkable
 			if (tileData[y1][x1 - 1.0f] == 0 || tileData[y1][x1 - 1.0f] == 2) {
 				direction.x = -1.0f;
 				direction.y = 0.0f;
 			}
 			else {
+				//If not walkable stop player and center on tile
 				direction.x = 0.0f;
-				x = floor(x / t) * t + t / divisor;
+				x = floor(x / t) * t + t / divisor * deltatime;
 			}
 		}
 }
 
+//Roatates player
 float Player::rotation() {
 	return this->rotate;
 }
 
+//Adds tileData to player
 void Player::addTileToPlayer(std::vector<std::vector<GLuint>> tile)
 {
 	tileData = tile;
@@ -165,7 +178,7 @@ glm::vec2 Player::animation(double deltaTime) {
 
 }
 
-
+//Get the spawn from map
 void Player::getspawn(float xSpawn, float ySpawn) {
 	this->spawnX = xSpawn;
 	this->spawnY = ySpawn;
@@ -174,6 +187,7 @@ void Player::getspawn(float xSpawn, float ySpawn) {
 	this->y = ySpawn;
 }
 
+//Reset player position to spawn
 void Player::Reset() {
 	x = spawnX;
 	y = spawnY;

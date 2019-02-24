@@ -20,76 +20,90 @@ void Ghost::movement(GLFWwindow *w, double deltatime){
 	Position.y = y;
 	if (fmod(delta, 50) == 0) {
 		int random = rand() % 4;
-		if (random == 0) {
+		if (random == 0 && tileData[y + 1.0f][x] == 0) {
 			direction.x = 0.f;
 			direction.y = 1.f;
 			x = floor(x / t) * t + t / divisor;
 		}
 		// Move backward
-		if (random == 1) {
+		if (random == 1 && tileData[y - 1.0f][x] == 0) {
 			direction.x = 0.f;
 			direction.y = -1.f;
 			x = floor(x / t) * t + t / divisor;
 		}
 		// Strafe right
-		if (random == 2) {
+		if (random == 2 && tileData[y][x + 1.0f] == 0) {
 			direction.x = 1.f;
 			direction.y = 0.f;
 			y = floor(y / t) * t + t / divisor;
 		}
 		// Strafe left
-		if (random == 3) {
+		if (random == 3 && tileData[y][x + 1.0f] == 0) {
 			direction.x = -1.f;
 			direction.y = 0.f;
 			y = floor(y / t) * t + t / divisor;
 		}
 	}
 
-
+			//If ghost is going up
 			if (direction.y == 1) {
 				int x1 = floor(x / t);
 				int y1 = floor(y / t);
-				if (tileData[y1 + 1][x1] == 0) {
+				//Check if tile in front is walkable
+				if (tileData[y1 + 1][x1] == 0 || tileData[y1 + 1.0f][x1] == 2) {
 					direction.x = 0.0f;
 					direction.y = 1.0f;
 				}
+				//If not walkable stop ghost and center on tile
 				else {
 					direction.y = 0.0f;
 					y = floor(y / t) * t + t / divisor;
 				}
 			}
+
+			//If ghost is going down
 			if (direction.y == -1) {
 				int x1 = floor(x / t);
 				int y1 = floor(y / t);
-				if (tileData[y1 - 1][x1] == 0) {
+				//Check if tile in front is walkable
+				if (tileData[y1 - 1][x1] == 0 || tileData[y1 - 1.0f][x1] == 2) {
 					direction.x = 0.0f;
 					direction.y = -1.0f;
 				}
 				else {
+					//If not walkable stop ghost and center on tile
 					direction.y = 0.0f;
 					y = floor(y / t) * t + t / divisor;
 				}
 			}
+
+			//If ghost is going right
 			if (direction.x == 1) {
 				int x1 = floor(x / t);
 				int y1 = floor(y / t);
-				if (tileData[y1][x1 + 1] == 0) {
+				//Check if tile in front is walkable
+				if (tileData[y1][x1 + 1] == 0 || tileData[y1][x1 + 1.0f] == 2) {
 					direction.x = 1.0f;
 					direction.y = .0f;
 				}
 				else {
+					//If not walkable stop ghost and center on tile
 					direction.x = 0.0f;
 					x = floor(x / t) * t + t / divisor;
 				}
 			}
+
+			//If ghost is going left
 			if (direction.x == -1) {
 				int x1 = floor(x / t);
 				int y1 = floor(y / t);
-				if (tileData[y1][x1 - 1] == 0) {
+				//Check if tile in front is walkable
+				if (tileData[y1][x1 - 1] == 0 || tileData[y1][x1 - 1.0f] == 2) {
 					direction.x = -1.0f;
 					direction.y = 0.0f;
 				}
 				else {
+					//If not walkable stop ghost and center on tile
 					direction.x = 0.0f;
 					x = floor(x / t) * t + t / divisor;
 				}
