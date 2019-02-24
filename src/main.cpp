@@ -122,17 +122,18 @@ void dynamic_code(GLFWwindow *w, double deltaTime, bool *exit)
 		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 		{
 
-			/// May create an error
-			/*
-			if (dead) {
-				static_code();
-				dead = false;
-			}
-			*/
-			
-			ImGui::Begin("Menu");
 
-			if(start) {
+
+			ImGui::Begin("Menu");
+			if (dead) {
+				if (ImGui::Button("Restart")) {
+					menu = false;
+					dead = false;
+					Score = 0;
+				}
+
+			}
+			else if (start) {
 				if (ImGui::Button("Start")) {
 					dead = false;
 					menu = false;
@@ -142,21 +143,23 @@ void dynamic_code(GLFWwindow *w, double deltaTime, bool *exit)
 			else {
 				if (ImGui::Button("Resume"))	menu = false;
 
-				/// Possibility to restart game makes an error
-				/*
+
 				if (ImGui::Button("Restart")) {
-					static_code();
-					dead = false;	// Should be somewhere else maube
+					Lives = 3;
+					PelletsDestoyed = 0;
+					player->Reset();
+					Levels[Level].Reset();
+					dead = false;
 					menu = false;
-					start = false;
+					GFX_INFO("Score: %i\n PelletsDestoryed: %i", Score, PelletsDestoyed);
 				}
-				*/
+
 			}
 
-			
-			
+
+
 			if (ImGui::Button("Exit"))		*exit = true;
-			
+
 			ImGui::Text("Score %d", Score);
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::End();
@@ -187,17 +190,15 @@ void dynamic_code(GLFWwindow *w, double deltaTime, bool *exit)
 			menu = true;
 			///Restart function?
 			Lives = 3;
-			Score = 0;
 			PelletsDestoyed = 0;
 			player->Reset();
 			Levels[Level].Reset();
-			dead = false;
 			GFX_INFO("Score: %i\n PelletsDestoryed: %i", Score, PelletsDestoyed);
 		}
 	}
-	
-	
-	
+
+
+
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -205,7 +206,7 @@ void dynamic_code(GLFWwindow *w, double deltaTime, bool *exit)
 	//Check if amount of pellets destoyed is enough to complete level
 	if (Levels[Level].Pelletamount == PelletsDestoyed) {
 		//Set level to completed
-		 comp = Levels[Level].IsCompleted();
+		comp = Levels[Level].IsCompleted();
 	}
 
 	if (Lives <= 0) {
