@@ -141,7 +141,7 @@ float Player::rotation() {
 void Player::addTileToPlayer(std::vector<std::vector<GLuint>> tile)
 {
 	tileData.push_back(tile);
-	currentLevel = 0;
+	GFX_INFO("Vector data: %i", tileData[0][1][1]);
 }
 
 glm::vec2 Player::translate(double deltaTime) {

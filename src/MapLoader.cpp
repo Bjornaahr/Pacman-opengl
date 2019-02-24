@@ -13,6 +13,7 @@ void MapLoader::Load(const GLchar *file, GLuint width, GLuint height, Player *p,
 	this->Bricks.clear();
 	this->Pellets.clear();
 	GLuint tileCode;
+	MapLoader map;
 	std::string line;
 	std::ifstream in(file);
 	//To store the tiledata
@@ -42,7 +43,16 @@ void MapLoader::Load(const GLchar *file, GLuint width, GLuint height, Player *p,
 			Pelletamount = 0;
 			this->init(tileData, width, height, p);
 		}
+		else {
+			GFX_WARN("NO TILEDATA");
+		}
+		
 	}
+	else {
+		GFX_WARN("No file");
+	}
+	in.close();
+
 }
 //Initilalize map
 void MapLoader::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlwidth, GLuint lvlheight, Player *p) {
@@ -69,12 +79,13 @@ void MapLoader::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlwidth,
 			}
 			//Send spawn to player if number is 2
 			if (tileData[y][x] == 2) {
+				GFX_INFO("SpawnPoint");
 				p->getspawn(x, y);
 			}
 
 		}
 	}
-
+	GFX_INFO("Loading level done");
 }
 //Render map
 void MapLoader::Draw(SpriteRenderer &renderer) {

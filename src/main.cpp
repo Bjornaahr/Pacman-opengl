@@ -78,12 +78,14 @@ void static_code() {
 	MapLoader one;
 	//Loads map WIDTH and HEIGHT dosn't do anything
 	one.Load("resources/levels/level0", WIDTH, HEIGHT, player, ghosts);
+	MapLoader two;
+	two.Load("resources/levels/level1", WIDTH, HEIGHT, player, ghosts);
+
 	//Add level to level vector
 	Levels.push_back(one);
+	Levels.push_back(two);
 	//Sets level to 0 getting ready to load the correct level
-	Level = 0;
-
-
+	Level = 1;
 }
 
 
@@ -132,7 +134,6 @@ void dynamic_code(GLFWwindow *w, double deltaTime, bool *exit)
 
 			if(start) {
 				if (ImGui::Button("Start")) {
-					static_code();
 					dead = false;
 					menu = false;
 					start = false;

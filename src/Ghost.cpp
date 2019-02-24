@@ -118,7 +118,6 @@ void Ghost::movement(GLFWwindow *w, int level){
 void Ghost::addTileToGhost(std::vector<std::vector<GLuint>> tile)
 {
 	tileData.push_back(tile);
-	currentLevel = 0;
 }
 
 glm::vec2 Ghost::translate(double deltaTime) {
